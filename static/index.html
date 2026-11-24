@@ -1,0 +1,2052 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="MEIRCHAT" />
+  <meta name="theme-color" content="#000000" />
+  <title>MEIRCHAT</title>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="apple-touch-icon" href="/static/meirchat.png" />
+  <link rel="icon" type="image/x-icon" href="/static/meirchat.ico" />
+  <link rel="icon" type="image/png" href="/static/meirchat.png" />
+  <link rel="stylesheet" href="/static/style.css?v=33" />
+</head>
+<body>
+  <div class="app-shell">
+    <div id="sidebar-backdrop" class="sidebar-backdrop hidden" onclick="closeMobileSidebar()"></div>
+    <!-- SOL YAN MENÜ -->
+    <aside id="app-sidebar" class="app-sidebar">
+      <div class="sb-brand-row">
+        <button class="sb-toggle-btn" onclick="toggleAppSidebar()" title="Menüyü Gizle/Göster">☰</button>
+        <button class="brand" onclick="openCreations('chatbots', 'nav-home')">MEIRCHAT <span class="sb-ver">v21.0</span></button>
+      </div>
+
+      <div class="sb-scroll">
+        <div class="sb-group">
+          <button class="sb-item active" id="nav-home" onclick="openCreations('chatbots', 'nav-home')">
+            <span class="sb-ico">🏠</span><span class="sb-lbl" data-i18n="nav_home">Ana Sayfa</span>
+          </button>
+          <button class="sb-item" id="nav-chats" onclick="showView('chats', 'nav-chats')">
+            <span class="sb-ico">💬</span><span class="sb-lbl" data-i18n="nav_chats">Sohbetler</span>
+          </button>
+          <button class="sb-item" id="nav-lorebooks" onclick="openCreations('lorebooks', 'nav-lorebooks')">
+            <span class="sb-ico">📖</span><span class="sb-lbl" data-i18n="nav_lorebooks">Lorebooks</span>
+          </button>
+          <button class="sb-item" id="nav-rulebooks" onclick="openCreations('rulebooks', 'nav-rulebooks')">
+            <span class="sb-ico">♟</span><span class="sb-lbl" data-i18n="nav_rulebooks">Rulebooks</span>
+          </button>
+        </div>
+
+        <div class="sb-divider"></div>
+
+        <!-- OLUŞTUR -->
+        <div class="sb-section">
+          <button class="sb-section-head" onclick="toggleSbSection('sec-create', this)">
+            <span class="sb-head-left"><span class="sb-ico">⊞</span><span data-i18n="nav_create">Oluştur</span></span>
+            <span class="sb-chev">⌃</span>
+          </button>
+          <div id="sec-create" class="sb-sublist">
+            <button class="sb-subitem" id="nav-create" data-i18n="nav_chatbot" onclick="openCharacterForm(null, 'nav-create')">Chatbot</button>
+            <button class="sb-subitem" id="nav-create-lb" data-i18n="nav_lorebook" onclick="showView('lorebook-start', 'nav-create-lb')">Lorebook</button>
+            <button class="sb-subitem" id="nav-create-rb" data-i18n="nav_rulebook" onclick="openRulebookEditor(null, 'nav-create-rb')">Rulebook</button>
+            <button class="sb-subitem" id="nav-create-group" data-i18n="nav_group" onclick="openGroupForm(null, 'nav-create-group')">Grup</button>
+          </div>
+        </div>
+
+        <div class="sb-divider"></div>
+
+        <!-- OLUŞTURDUKLARIM -->
+        <div class="sb-section">
+          <button class="sb-section-head" onclick="toggleSbSection('sec-mine', this)">
+            <span class="sb-head-left"><span class="sb-ico">📁</span><span data-i18n="nav_mine">Oluşturduklarım</span></span>
+            <span class="sb-chev">⌃</span>
+          </button>
+          <div id="sec-mine" class="sb-sublist">
+            <button class="sb-subitem" id="nav-mine-chatbots" data-i18n="nav_chatbots" onclick="openCreations('chatbots', 'nav-mine-chatbots')">Chatbots</button>
+            <button class="sb-subitem" id="nav-mine-lorebooks" data-i18n="nav_lorebooks" onclick="openCreations('lorebooks', 'nav-mine-lorebooks')">Lorebooks</button>
+            <button class="sb-subitem" id="nav-mine-rulebooks" data-i18n="nav_rulebooks" onclick="openCreations('rulebooks', 'nav-mine-rulebooks')">Rulebooks</button>
+            <button class="sb-subitem" id="nav-mine-groups" data-i18n="nav_groups" onclick="openCreations('groups', 'nav-mine-groups')">Gruplar</button>
+          </div>
+        </div>
+
+        <div class="sb-divider"></div>
+
+        <div class="sb-group">
+          <button class="sb-item" id="nav-personas" onclick="showView('personas', 'nav-personas')">
+            <span class="sb-ico">👤</span><span class="sb-lbl" data-i18n="nav_personas">Personalarım</span>
+          </button>
+          <button class="sb-item" id="nav-settings" onclick="openSettingsView(false)">
+            <span class="sb-ico">⚙</span><span class="sb-lbl" data-i18n="nav_settings">Ayarlar</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="sb-footer">
+        <div class="status-pill full-pill clickable-pill" id="status-pill" onclick="openEngineCenter()" title="Uygulama & AI Motor Merkezini Aç">
+          <span class="dot" id="status-dot"></span>
+          <span id="status-text">Kontrol ediliyor...</span>
+        </div>
+        <button class="icon-btn" onclick="toggleTheme()" title="Tema Değiştir">◐</button>
+        <button class="icon-btn hidden" id="btn-app-quit" onclick="quitDesktopApp()" data-i18n-title="quit_title" title="MEIRCHAT ve LM Studio'yu Kapat">⏻</button>
+        <button class="icon-btn hidden" id="btn-auth-logout" onclick="logoutSession()" title="Oturumu Kapat (Çıkış)">🔒</button>
+      </div>
+    </aside>
+
+    <!-- SAĞ ANA İÇERİK -->
+    <div class="app-content">
+      <header class="mini-topbar">
+        <div class="topbar-left">
+          <button class="sb-toggle-btn" id="topbar-menu-btn" onclick="toggleAppSidebar()" title="Menüyü Aç/Kapat">☰</button>
+          <span id="topbar-title" class="topbar-title">Oluşturduklarım</span>
+        </div>
+        <div class="topbar-right">
+          <button type="button" class="top-profile-btn" id="top-profile-btn" onclick="openProfileView()" title="Profil Ayarları">
+            <img id="top-profile-img" class="top-profile-img hidden" src="" alt="" />
+            <span id="top-profile-fallback" class="top-profile-fallback">D</span>
+            <span id="top-profile-name" class="top-profile-name">Deniz</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- 1. OLUŞTURDUKLARIM (BİRLEŞİK 4 SEKMELİ GALERİ: CHATBOTS / LOREBOOKS / RULEBOOKS / GRUPLAR) -->
+      <main id="view-creations" class="view active">
+        <div class="mc-container">
+          <h1 class="mc-page-title" data-i18n="page_creations">Oluşturduklarım</h1>
+
+          <div class="mc-toolbar">
+            <div class="mc-search-wrap">
+              <span class="mc-search-ico">🔍</span>
+              <input type="text" id="mc-search-input" data-i18n-ph="search_placeholder" placeholder="Ara..." oninput="renderCreations()" />
+            </div>
+            <div class="mc-toolbar-right">
+              <select id="mc-filter-select" class="mc-select" onchange="renderCreations()">
+                <option value="all" data-i18n="filter_all">Tümü</option>
+                <option value="drafts" data-i18n="filter_drafts">Taslaklar</option>
+                <option value="with_lb" data-i18n="filter_lb">Lorebook Bağlı</option>
+                <option value="with_rb" data-i18n="filter_rb">Rulebook Bağlı</option>
+              </select>
+              <select id="mc-sort-select" class="mc-select" onchange="renderCreations()">
+                <option value="latest" data-i18n="sort_latest">En Son</option>
+                <option value="az" data-i18n="sort_az">A–Z</option>
+                <option value="popular" data-i18n="sort_popular">En Çok Kullanılan</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mc-tabs-row">
+            <div class="mc-tabs">
+              <button type="button" class="mc-tab active" id="mc-tab-chatbots" data-i18n="nav_chatbots" onclick="openCreations('chatbots')">Chatbots</button>
+              <button type="button" class="mc-tab" id="mc-tab-lorebooks" data-i18n="nav_lorebooks" onclick="openCreations('lorebooks')">Lorebooks</button>
+              <button type="button" class="mc-tab" id="mc-tab-rulebooks" data-i18n="nav_rulebooks" onclick="openCreations('rulebooks')">Rulebooks</button>
+              <button type="button" class="mc-tab" id="mc-tab-groups" data-i18n="nav_groups" onclick="openCreations('groups')">Gruplar</button>
+            </div>
+            <div id="mc-tab-actions" class="mc-tab-actions"></div>
+          </div>
+
+          <!-- Rulebooks Sekmesine Özel Üst Satır ve Bilgi Kutusu -->
+          <div id="mc-rb-banner-wrap" class="hidden">
+            <div class="mc-rb-subhead">
+              <div class="mc-rb-subleft">
+                <h2>Rulebooks</h2>
+              </div>
+              <div class="mc-rb-subright">
+                <button type="button" class="btn primary" onclick="openRulebookEditor()">+ Rulebook Oluştur</button>
+                <label class="btn" style="margin:0;flex-direction:row;align-items:center;">
+                  İçe Aktar
+                  <input type="file" accept=".json" onchange="quickImportRulebookFile(this)" hidden />
+                </label>
+              </div>
+            </div>
+            <div id="mc-rb-guide-box" class="mc-info-banner">
+              <div class="mc-info-ico">📘</div>
+              <div class="mc-info-body">
+                <b>Rulebook Nedir?</b>
+                <p>Rulebook sohbete İlgi, Güven, Para veya Tarih/Saat gibi göstergeler ekler. Göstergeler sohbet ilerledikçe değişir ve kuralların karakterin her seviyede nasıl davranacağını belirler. Tıpkı Lorebook gibi chatbotlara ve personalara bağlanabilir.</p>
+              </div>
+              <button type="button" class="icon-btn" onclick="document.getElementById('mc-rb-guide-box').classList.add('hidden')">✕</button>
+            </div>
+          </div>
+
+          <div id="mc-grid"></div>
+        </div>
+      </main>
+
+      <!-- 1B. SOHBETLER (HER CHATBOT BİR ARADA — SPICYCHAT BİREBİR) -->
+      <main id="view-chats" class="view">
+        <div class="sc-chats-container">
+          <div class="sc-chats-head">
+            <h1 class="mc-page-title" style="margin:0;" data-i18n="page_chats">Tüm AI Sohbetlerin Tek Yerde</h1>
+            <button type="button" class="btn primary small" id="btn-manage-all-chats" data-i18n="manage_chats" onclick="toggleManageAllChats()">Sohbetleri Yönet</button>
+          </div>
+
+          <div class="sc-chats-search-row">
+            <div class="mc-search-wrap" style="max-width:none;flex:1;">
+              <span class="mc-search-ico">🔍</span>
+              <input type="text" id="chats-search-input" data-i18n-ph="search_chats_ph" placeholder="Sohbet, isim ara..." oninput="renderAllChats()" />
+            </div>
+          </div>
+
+          <div id="all-chats-manage-bar" class="sc-manage-bar hidden">
+            <span id="all-chats-sel-cnt">0 seçildi</span>
+            <div style="display:flex;gap:8px;">
+              <button type="button" class="btn small" data-i18n="btn_cancel" onclick="toggleManageAllChats(false)">İptal</button>
+              <button type="button" class="btn small danger" data-i18n="delete_selected" onclick="deleteSelectedAllChats()">Seçilenleri Sil</button>
+            </div>
+          </div>
+
+          <div class="sc-chats-meta-row">
+            <span id="all-chats-count" class="muted small-text">0 sohbet</span>
+            <select id="chats-sort-select" class="mc-select small-sel" onchange="renderAllChats()">
+              <option value="latest" data-i18n="sort_latest">En Son</option>
+              <option value="az" data-i18n="sort_az">A–Z</option>
+            </select>
+          </div>
+
+          <div id="all-chats-list" class="sc-chats-list"></div>
+        </div>
+      </main>
+
+      <!-- 1C. KAYITLI SOHBETLER (VIEW SAVED CHATS WITH [CHATBOT] — SPICYCHAT VİDEO BİREBİR) -->
+      <main id="view-saved-chats" class="view">
+        <div class="sc-chats-container">
+          <button type="button" class="pp-back-btn" data-i18n="back_btn" onclick="goBackFromSavedChats()">‹ Geri</button>
+          <div class="sc-chats-head">
+            <h1 id="saved-chats-title" class="mc-page-title" style="margin:0;">Kayıtlı Sohbetler</h1>
+            <div style="display:flex;gap:8px;">
+              <button type="button" class="btn small" data-i18n="menu_start_chat" onclick="startNewChatFromSaved()">+ Sohbet Başlat</button>
+              <button type="button" class="btn primary small" id="btn-manage-saved-chats" data-i18n="manage_chats" onclick="toggleManageSavedChats()">Sohbetleri Yönet</button>
+            </div>
+          </div>
+
+          <div class="sc-chats-search-row">
+            <div class="mc-search-wrap" style="max-width:none;flex:1;">
+              <span class="mc-search-ico">🔍</span>
+              <input type="text" id="saved-chats-search-input" data-i18n-ph="search_chats_ph" placeholder="Sohbet, isim ara..." oninput="renderSavedChatsView()" />
+            </div>
+          </div>
+
+          <div id="saved-chats-manage-bar" class="sc-manage-bar hidden">
+            <span id="saved-chats-sel-cnt">0 seçildi</span>
+            <div style="display:flex;gap:8px;">
+              <button type="button" class="btn small" data-i18n="btn_cancel" onclick="toggleManageSavedChats(false)">İptal</button>
+              <button type="button" class="btn small danger" data-i18n="delete_selected" onclick="deleteSelectedSavedChats()">Seçilenleri Sil</button>
+            </div>
+          </div>
+
+          <div class="sc-chats-meta-row">
+            <span id="saved-chats-count" class="muted small-text">0 sohbet</span>
+            <select id="saved-chats-sort-select" class="mc-select small-sel" onchange="renderSavedChatsView()">
+              <option value="latest" data-i18n="sort_latest">En Son</option>
+              <option value="oldest" data-i18n="sort_oldest">En Eski</option>
+            </select>
+          </div>
+
+          <div id="saved-chats-page-list" class="sc-chats-list"></div>
+        </div>
+      </main>
+
+      <!-- 2. LOREBOOK OLUŞTURMA İLK GİRİŞ (START NEW / IMPORT) -->
+      <main id="view-lorebook-start" class="view">
+        <div class="sc-start-wrap">
+          <h1 class="sc-card-title" style="margin-bottom:18px;">Lorebook Oluştur</h1>
+          <div class="sc-choice-stack">
+            <button type="button" class="sc-choice-card" onclick="openLorebookEditor(null, 'details')">
+              <span class="sc-choice-ico">✎</span>
+              <b>Sıfırdan Başla</b>
+              <span class="muted">Dünyanı adım adım, detay detay oluştur</span>
+            </button>
+            <label class="sc-choice-card" style="margin:0;">
+              <span class="sc-choice-ico">↑</span>
+              <b>İçe Aktar</b>
+              <span class="muted">Lorebook'unu JSON formatında yükle</span>
+              <input type="file" accept=".json" onchange="importStandaloneLorebook(this, true)" hidden />
+            </label>
+          </div>
+        </div>
+      </main>
+
+      <!-- 2B. LOREBOOK OLUŞTUR / DÜZENLE (DETAYLAR + KAYITLAR) -->
+      <main id="view-lorebook-edit" class="view">
+        <div class="sc-form-wrap">
+          <div class="sc-form-card">
+            <input type="hidden" id="lb-id" />
+            <input type="hidden" id="lb-cover-url" />
+
+            <div class="sc-form-head">
+              <div>
+                <h1 id="lb-form-title">Lorebook Oluştur</h1>
+                <div id="lb-form-subname" class="muted" style="font-size:14px;margin-top:2px;"></div>
+              </div>
+              <button type="button" class="btn small" onclick="openCreations('lorebooks')">← Lorebooks</button>
+            </div>
+
+            <div class="mc-tabs" style="margin-bottom:14px;">
+              <button type="button" class="mc-tab active" id="lb-tab-details" onclick="switchLorebookTab('details')">Detaylar</button>
+              <button type="button" class="mc-tab" id="lb-tab-entries" onclick="switchLorebookTab('entries')">Kayıtlar</button>
+            </div>
+
+            <!-- DETAYLAR SEKMESİ -->
+            <div id="lb-pane-details">
+              <p class="muted small-text" style="margin-bottom:16px;line-height:1.5;">
+                Karakter geçmişlerini, dünya bilgilerini ve tekrar eden gerçekleri token harcamadan saklayarak karakterinin sohbetler boyunca tutarlı kalmasını sağla.
+              </p>
+
+              <div class="sc-field">
+                <label class="sc-label">Ad <span class="req">*</span></label>
+                <input type="text" id="lb-name" maxlength="60" placeholder="Örn: Alev ve Taş Günlükleri" oninput="updateCounter('lb-name','lb-name-cnt',60);document.getElementById('lb-form-subname').textContent=this.value;" />
+                <div class="sc-meta-row">
+                  <span>Lorebook için kısa ve açıklayıcı bir başlık</span>
+                  <span id="lb-name-cnt">0/60</span>
+                </div>
+              </div>
+
+              <div class="sc-field">
+                <label class="sc-label">Açıklama <span class="req">*</span></label>
+                <textarea id="lb-desc" rows="3" maxlength="200" placeholder="Bu Lorebook'un ne hakkında olduğunu anlat..." oninput="updateCounter('lb-desc','lb-desc-cnt',200)"></textarea>
+                <div class="sc-meta-row">
+                  <span>Bu Lorebook'un içeriğini özetle</span>
+                  <span id="lb-desc-cnt">0/200</span>
+                </div>
+              </div>
+
+              <div class="sc-field">
+                <label class="sc-label">Kapak Görseli</label>
+                <img id="lb-cover-preview" class="sc-square-preview hidden" src="" alt="Kapak" />
+                <div class="sc-btn-row">
+                  <input type="file" id="lb-cover-file" accept="image/*" onchange="uploadGenericImage(this,'lb-cover-url','lb-cover-preview')" hidden />
+                  <button type="button" class="sc-outline-btn" onclick="document.getElementById('lb-cover-file').click()">↑ Yükle</button>
+                  <button type="button" class="sc-outline-btn hidden" id="lb-cover-clear" onclick="clearGenericImage('lb-cover-url','lb-cover-preview','lb-cover-clear')">Kaldır</button>
+                </div>
+                <div class="sc-meta-row"><span>Lorebook'u görsel olarak temsil eden kapak fotoğrafı</span></div>
+              </div>
+
+              <div class="sc-field">
+                <label class="sc-label">Etiketler</label>
+                <div class="sc-tag-box" id="lb-tag-box" onclick="openTagDropdown('lb')">
+                  <div id="lb-tag-chips" class="sc-chips-inline"></div>
+                  <input type="text" id="lb-tag-input" class="sc-tag-inp" placeholder="Etiket Ekle..." oninput="filterTagDropdown('lb')" onkeydown="handleTagKey(event,'lb')" onfocus="openTagDropdown('lb')" />
+                  <button type="button" class="sc-clear-x" onclick="event.stopPropagation();clearTags('lb')" title="Tümünü temizle">✕</button>
+                </div>
+                <div id="lb-tag-dropdown" class="sc-tag-dropdown hidden"></div>
+                <div class="sc-meta-row">
+                  <span>Lorebook'u kategorize etmek için etiket seç</span>
+                  <span id="lb-tag-cnt">0/12</span>
+                </div>
+              </div>
+
+              <div class="sc-footer-actions">
+                <button type="button" class="btn primary" onclick="saveStandaloneLorebook()">Lorebook'u Kaydet</button>
+              </div>
+            </div>
+
+            <!-- KAYITLAR (ENTRIES) SEKMESİ -->
+            <div id="lb-pane-entries" class="hidden">
+              <button type="button" class="sc-white-full-btn" onclick="openEntryModal(null)">Kayıt Ekle</button>
+              <p class="muted small-text" style="margin:8px 0 12px;">Karakter, olay, kavram veya mekân. 5.000 kayda kadar ekleyebilirsin.</p>
+
+              <div class="mc-search-wrap" style="margin-bottom:12px;">
+                <span class="mc-search-ico">🔍</span>
+                <input type="text" id="lb-entry-search" placeholder="Ad veya anahtar kelimelere göre ara..." oninput="renderLoreEntriesList()" />
+              </div>
+
+              <div class="sc-entry-toolbar">
+                <span id="lb-entry-count" class="muted small-text">0/5.000 kayıt</span>
+                <select id="lb-entry-sort" class="mc-select small-sel" onchange="renderLoreEntriesList()">
+                  <option value="latest">En Son</option>
+                  <option value="az">A–Z</option>
+                  <option value="za">Z–A</option>
+                </select>
+              </div>
+
+              <div id="lore-entries-list" class="sc-entry-list"></div>
+
+              <div class="sc-footer-actions" style="margin-top:16px;">
+                <button type="button" class="btn primary" onclick="saveStandaloneLorebook()">Değişiklikleri Kaydet</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- 3. SPICYCHAT BİREBİR RULEBOOK EDİTÖRÜ -->
+      <main id="view-rulebook-edit" class="view">
+        <div class="rbe-shell">
+          <input type="hidden" id="rb-id" />
+          <input type="hidden" id="rb-cover-url" />
+
+          <div class="rbe-breadcrumb">
+            <button type="button" class="link-btn" onclick="openCreations('rulebooks')">Rulebooks</button>
+            <span>/</span>
+            <span>Rulebook</span>
+          </div>
+
+          <div class="rbe-header-row">
+            <div class="rbe-title-group">
+              <span class="rbe-type-pill">RULEBOOK</span>
+              <h1 id="rb-header-title">Rulebook Oluştur</h1>
+            </div>
+            <div class="rbe-header-actions">
+              <button type="button" class="btn" onclick="exportCurrentEditingRulebook()">↓ JSON Dışa Aktar</button>
+              <label class="btn" style="margin:0;flex-direction:row;align-items:center;">
+                ↑ İçe Aktar
+                <input type="file" accept=".json" onchange="importRulebookJSON(this)" hidden />
+              </label>
+              <button type="button" class="btn" onclick="toggleRulebookJSON()">{ } JSON</button>
+              <button type="button" class="btn" onclick="saveStandaloneRulebook(true)">Taslak Kaydet</button>
+              <button type="button" class="btn primary" onclick="saveStandaloneRulebook(false)">Kaydet</button>
+            </div>
+          </div>
+
+          <p class="muted small-text rbe-subtitle">
+            Rulebook, tıpkı Lorebook gibi bir Chatbot'a veya Persona'ya bağlanır. Göstergeler sohbetin gidişatını takip eder; etki kuralları gösterge değerlerini modele giden ek sistem talimatlarına dönüştürür.
+          </p>
+
+          <div id="rbe-health-row" class="rbe-health-row"></div>
+
+          <div class="rbe-tabs">
+            <button type="button" class="rbe-tab" id="rbe-tab-props" onclick="switchRulebookTab('props')">Özellikler</button>
+            <button type="button" class="rbe-tab active" id="rbe-tab-meters" onclick="switchRulebookTab('meters')">
+              Göstergeler <span class="rbe-tab-count" id="rbe-cnt-meters">0</span>
+            </button>
+            <button type="button" class="rbe-tab" id="rbe-tab-rules" onclick="switchRulebookTab('rules')">
+              Etki Kuralları <span class="rbe-tab-count" id="rbe-cnt-rules">0</span>
+            </button>
+          </div>
+
+          <div id="rule-json-box" class="hidden" style="margin-top:16px;">
+            <div class="rbe-card">
+              <div class="sub-header">
+                <b>Ham Rulebook JSON (SpicyChat v1-draft uyumlu)</b>
+                <button type="button" class="btn small primary" onclick="toggleRulebookJSON()">Görsel Editöre Uygula</button>
+              </div>
+              <textarea id="rb-json-text" rows="22" style="font-family:monospace;font-size:12px;width:100%;"></textarea>
+            </div>
+          </div>
+
+          <!-- ÖZELLİKLER -->
+          <div id="rbe-pane-props" class="rbe-pane hidden">
+            <div class="rbe-two-col props-grid">
+              <div class="rbe-col-left">
+                <div class="rbe-card">
+                  <h3 style="margin-bottom:14px;">Temel Bilgiler</h3>
+                  <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:14px;flex-wrap:wrap;">
+                    <div>
+                      <img id="rb-cover-preview" class="sc-square-preview hidden" style="width:110px;height:110px;" src="" alt="" />
+                      <div id="rb-cover-empty" class="rb-cover-placeholder">Kapak yok</div>
+                      <input type="file" id="rb-cover-file" accept="image/*" onchange="uploadRulebookCover(this)" hidden />
+                      <button type="button" class="btn small full" style="margin-top:6px;" onclick="document.getElementById('rb-cover-file').click()">↑ Kapak Yükle</button>
+                    </div>
+                    <div style="flex:1;min-width:220px;">
+                      <label>Rulebook Adı *
+                        <input type="text" id="rb-name" placeholder="Örn: Futbolcu Yaşam Simülasyonu v2.0" oninput="document.getElementById('rb-header-title').textContent=this.value||'Yeni Rulebook'" />
+                      </label>
+                      <label>Açıklama
+                        <textarea id="rb-desc" rows="4" placeholder="Bu Rulebook neleri takip ediyor?"></textarea>
+                      </label>
+                    </div>
+                  </div>
+                  <label>Etiketler (virgülle ayır)
+                    <input type="text" id="rb-tags" placeholder="futbol, yaşam, rpg" />
+                  </label>
+                </div>
+              </div>
+              <div class="rbe-col-right">
+                <div class="rbe-card">
+                  <h3 style="margin-bottom:10px;">Durum</h3>
+                  <div class="rbe-stat-row"><span class="muted">Durum</span><span style="color:#4ade80;font-weight:600;">Yerel / Aktif</span></div>
+                  <div class="rbe-stat-row"><span class="muted">Gösterge Sayısı</span><span id="rb-prop-mcount">0</span></div>
+                  <div class="rbe-stat-row"><span class="muted">Etki Kuralı Sayısı</span><span id="rb-prop-rcount">0</span></div>
+                  <div style="margin-top:12px;">
+                    <button type="button" class="btn small full" onclick="loadSampleRulebook()">⚡ Örnek RPG Şablonu Yükle</button>
+                  </div>
+                </div>
+                <div class="rbe-card danger-card" id="rb-delete-card">
+                  <h3 style="margin-bottom:8px;">Rulebook'u Sil</h3>
+                  <p class="muted small-text" style="margin-bottom:12px;">Silinen Rulebook bağlı olduğu tüm chatbot ve personalardan ayrılır.</p>
+                  <button type="button" class="btn danger" onclick="deleteEditingRulebook()">🗑 Rulebook'u Sil</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- GÖSTERGELER & ETKİ KURALLARI -->
+          <div id="rbe-workspace" class="rbe-two-col">
+            <div class="rbe-col-left">
+              <div id="rbe-pane-meters">
+                <div class="rbe-card">
+                  <div class="rbe-section-head">
+                    <div>
+                      <h3>Göstergeler</h3>
+                      <p class="muted small-text">Rulebook'un takip ettiği her şey. Her göstergenin türü, nasıl düzenleneceğini ve sohbette nasıl görüneceğini belirler.</p>
+                    </div>
+                    <button type="button" class="btn primary small" onclick="addMeterRow()">+ Gösterge Ekle</button>
+                  </div>
+                  <div id="rbe-meter-strip" class="rbe-meter-strip"></div>
+                  <div id="rb-meters-list"></div>
+                </div>
+              </div>
+
+              <div id="rbe-pane-rules" class="hidden">
+                <div class="rbe-card">
+                  <div class="rbe-section-head">
+                    <div>
+                      <h3>Seviyeye Göre Etki</h3>
+                      <p class="muted small-text">Her göstergeyi (ve hikâye saatini) seviyelere bölün; aktif seviyenin talimatı sistem mesajına eklenir.</p>
+                    </div>
+                  </div>
+                  <div id="rbe-influence-levels" class="rbe-inf-stack"></div>
+                </div>
+
+                <div class="rbe-card" style="margin-top:16px;">
+                  <div class="rbe-section-head">
+                    <div>
+                      <h3>Birleşik Kurallar</h3>
+                      <p class="muted small-text">Birden fazla göstergeye aynı anda bağlı durumlar için.</p>
+                    </div>
+                    <button type="button" class="btn primary small" onclick="addCombinedRule()">+ Kural Ekle</button>
+                  </div>
+                  <div id="rbe-combined-rules" class="rbe-inf-stack"></div>
+                </div>
+
+                <div class="rbe-card" style="margin-top:16px;">
+                  <div class="rbe-section-head">
+                    <div>
+                      <h3>Rastgele Olaylar & Özel Kurallar</h3>
+                      <p class="muted small-text">Yüzdelik şansla gerçekleşen rastgele hikâye olayları.</p>
+                    </div>
+                    <button type="button" class="btn small" onclick="addExtraRuleRow()">+ Olay Ekle</button>
+                  </div>
+                  <div id="rb-extra-rules-list" class="rbe-meter-stack"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="rbe-col-right rbe-sticky">
+              <div class="rbe-card">
+                <div class="rbe-section-head" style="margin-bottom:8px;">
+                  <div>
+                    <h3>Modelin Gördüğü</h3>
+                    <p class="muted small-text">Canlı Test değerlerinden anlık oluşturulur.</p>
+                  </div>
+                </div>
+                <div class="rbe-ms-frame">
+                  <div class="rbe-ms-static">SİSTEM · temel kurallar & anlatım tonu</div>
+                  <div class="rbe-ms-static">KARAKTER · bağlı chatbot, persona, senaryo, örnek diyaloglar</div>
+                  <div class="rbe-ms-static">HAFIZA · lorebook · özet · son mesajlar</div>
+                  <div id="rbe-model-sees" class="rbe-model-box"></div>
+                  <div class="rbe-ms-static">KULLANICI · son mesaj</div>
+                </div>
+                <div id="rbe-status-line-preview" class="rbe-status-preview"></div>
+              </div>
+
+              <div class="rbe-card" style="margin-top:14px;">
+                <div class="rbe-section-head" style="margin-bottom:10px;">
+                  <h3>Canlı Test (Playtest)</h3>
+                  <button type="button" class="btn small" onclick="resetPlaytestState()">Durumu Sıfırla</button>
+                </div>
+                <div id="rbe-playtest-controls" class="rbe-playtest-list"></div>
+
+                <div class="rbe-pt-transcript">
+                  <div class="rbe-pt-tr-head">
+                    <b>Sohbet Testi</b>
+                    <span class="muted small-text">Her mesajda kurallar & saat test edilir</span>
+                  </div>
+                  <div id="rbe-pt-log" class="rbe-pt-log"></div>
+                  <div class="rbe-pt-compose">
+                    <div class="seg-group small-seg">
+                      <button type="button" id="pt-role-bot" class="seg-btn" onclick="setPlaytestRole('assistant')">Bot</button>
+                      <button type="button" id="pt-role-user" class="seg-btn active" onclick="setPlaytestRole('user')">Kullanıcı</button>
+                    </div>
+                    <textarea id="rbe-pt-input" rows="2" placeholder="Test mesajı yaz..."></textarea>
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+                      <span class="muted small-text">Saat, lokasyon ve kuralları anında dener</span>
+                      <button type="button" class="btn primary small" onclick="runPlaytestMessage()">Gönder ve Değerlendir</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- 4. CHATBOT OLUŞTUR / DÜZENLE (SPICYCHAT BİREBİR) -->
+      <main id="view-create" class="view">
+        <div class="sc-form-wrap">
+          <div class="sc-form-card">
+            <input type="hidden" id="c-id" />
+            <input type="hidden" id="c-avatar-url" />
+
+            <div class="sc-form-head">
+              <h1 id="form-title">Chatbot Oluştur</h1>
+              <button type="button" class="btn small" onclick="openCreations('chatbots')">← Chatbots</button>
+            </div>
+
+            <!-- Avatar -->
+            <div class="sc-field">
+              <label class="sc-label">Avatar <span class="req">*</span></label>
+              <img id="c-avatar-preview" class="sc-square-preview hidden" src="" alt="Avatar" />
+              <div class="sc-btn-row">
+                <input type="file" id="c-avatar-file" accept="image/*" onchange="uploadGenericImage(this,'c-avatar-url','c-avatar-preview')" hidden />
+                <button type="button" class="sc-outline-btn" onclick="document.getElementById('c-avatar-file').click()">↑ Yükle</button>
+              </div>
+              <div class="sc-meta-row"><span>Chatbot'un için bir avatar seç</span></div>
+            </div>
+
+            <!-- Karakter Kartı İçe Aktar (.json veya .png) -->
+            <div class="sc-import-row">
+              <div>
+                <div class="sc-label" style="margin:0;">Karakter Kartı İçe Aktar</div>
+                <div class="muted small-text">Alanları otomatik doldurmak için karakter kartı (.json veya .png) yükle</div>
+              </div>
+              <label class="sc-outline-btn" style="margin:0;cursor:pointer;">
+                ↓ İçe Aktar
+                <input type="file" accept=".json,.png" onchange="importCharacterCardIntoForm(this)" hidden />
+              </label>
+            </div>
+
+            <!-- Ad -->
+            <div class="sc-field">
+              <label class="sc-label">Ad <span class="req">*</span></label>
+              <input type="text" id="c-name" maxlength="60" placeholder="Örn: Footballer Life v2.0" oninput="updateCharFormTokens()" />
+              <div class="sc-meta-row">
+                <span>Ad ve soyad içerebilir</span>
+                <span id="c-name-cnt">0/60</span>
+              </div>
+            </div>
+
+            <!-- Başlık -->
+            <div class="sc-field">
+              <label class="sc-label">Başlık <span class="req">*</span></label>
+              <input type="text" id="c-title" maxlength="100" placeholder="Chatbot'unu tanımlayan kısa cümle" oninput="updateCharFormTokens()" />
+              <div class="sc-meta-row">
+                <span>Kart üzerinde görünecek kısa özet</span>
+                <span id="c-title-cnt">0/100</span>
+              </div>
+            </div>
+
+            <!-- Karşılama Mesajı -->
+            <div class="sc-field">
+              <label class="sc-label">Karşılama Mesajı <span class="req">*</span></label>
+              <textarea id="c-greeting" rows="4" placeholder="Sohbeti başlatırken ne söyleyecek? ({{user}} kullanabilirsin)" oninput="updateCharFormTokens()"></textarea>
+              <div class="sc-meta-row">
+                <span>Sohbeti başlatan ilk sahne / mesaj</span>
+                <span id="c-greeting-cnt">0/2000 karakter | 0 token</span>
+              </div>
+            </div>
+
+            <!-- Kişilik -->
+            <div class="sc-field">
+              <label class="sc-label">Chatbot'un Kişiliği <span class="req">*</span></label>
+              <textarea id="c-personality" rows="5" placeholder="Karakterin kişiliğini, görünüşünü, konuşma tarzını ve geçmişini anlat..." oninput="updateCharFormTokens()"></textarea>
+              <div class="sc-meta-row">
+                <span>Karakterin temel kişilik ve anlatım özellikleri</span>
+                <span id="c-personality-cnt">0/5000 karakter | 0 token</span>
+              </div>
+            </div>
+
+            <!-- Etiketler -->
+            <div class="sc-field">
+              <label class="sc-label">Etiketler</label>
+              <div class="sc-tag-box" onclick="openTagDropdown('char')">
+                <div id="char-tag-chips" class="sc-chips-inline"></div>
+                <input type="text" id="char-tag-input" class="sc-tag-inp" placeholder="Etiket Ekle..." oninput="filterTagDropdown('char')" onkeydown="handleTagKey(event,'char')" onfocus="openTagDropdown('char')" />
+                <button type="button" class="sc-clear-x" onclick="event.stopPropagation();clearTags('char')" title="Tümünü temizle">✕</button>
+              </div>
+              <div id="char-tag-dropdown" class="sc-tag-dropdown hidden"></div>
+              <div class="sc-meta-row">
+                <span>Chatbot'unu kolayca bulmak için etiket ekle</span>
+                <span id="char-tag-cnt">0/12</span>
+              </div>
+            </div>
+
+            <!-- GELİŞMİŞ (ADVANCED) -->
+            <div style="margin:14px 0;">
+              <button type="button" class="sc-outline-btn" id="c-adv-toggle" onclick="toggleCharAdvanced()">Gelişmiş ⌃</button>
+            </div>
+
+            <div id="c-advanced-pane">
+              <!-- Lorebook Bağla -->
+              <div class="sc-field">
+                <label class="sc-label">Lorebook</label>
+                <div id="c-attached-lorebooks" class="sc-attached-list"></div>
+                <button type="button" class="sc-outline-btn" onclick="openAttachLorebookModal('char')">+ Lorebook Bağla</button>
+                <div class="sc-meta-row"><span>Dünya ve karakter bağlamı için Lorebook bağla</span></div>
+              </div>
+
+              <!-- Rulebook Bağla -->
+              <div class="sc-field">
+                <label class="sc-label">Rulebook</label>
+                <div id="c-attached-rulebook" class="sc-attached-list"></div>
+                <button type="button" class="sc-outline-btn" onclick="openAttachRulebookModal('char')">+ Rulebook Bağla</button>
+                <div class="sc-meta-row"><span>Sohbet ilerledikçe değişen göstergeler ve kurallar ekler</span></div>
+              </div>
+
+              <!-- Senaryo -->
+              <div class="sc-field">
+                <label class="sc-label">Senaryo</label>
+                <textarea id="c-scenario" rows="4" placeholder="Sohbetin geçtiği mevcut durum ve ortamı anlat..." oninput="updateCharFormTokens()"></textarea>
+                <div class="sc-meta-row">
+                  <span>Mevcut durum ve evren bağlamı</span>
+                  <span id="c-scenario-cnt">0/4000 karakter | 0 token</span>
+                </div>
+              </div>
+
+              <!-- Örnek Diyalog -->
+              <div class="sc-field">
+                <label class="sc-label">Örnek Diyalog</label>
+                <textarea id="c-examples" rows="4" placeholder="{{user}}: Nasılsın?&#10;{{char}}: İyiyim {{user}}, sen nasılsın?" oninput="updateCharFormTokens()"></textarea>
+                <div class="sc-meta-row">
+                  <span>Chatbot'un konuşma üslubunu belirleyen örnek diyaloglar</span>
+                  <span id="c-examples-cnt">0/4000 karakter | 0 token</span>
+                </div>
+              </div>
+
+              <!-- Gruplarda İzin Ver -->
+              <div class="rbe-switch-row" style="padding:10px 0;">
+                <div>
+                  <div class="sc-label" style="margin:0;">Gruplarda İzin Ver</div>
+                  <div class="muted small-text">Bu chatbot grup sohbetlerine üye olarak eklenebilir</div>
+                </div>
+                <label class="sw-toggle"><input type="checkbox" id="c-allow-groups" checked /><span class="sw-slider"></span></label>
+              </div>
+            </div>
+
+            <!-- Token Özeti ve Kaydetme -->
+            <div class="sc-token-summary">
+              <div class="sc-token-big" id="c-total-tokens">Token: 0 / 2400</div>
+              <div class="muted small-text">Daha fazla detay daha fazla bağlam token'ı kullanır.</div>
+            </div>
+
+            <div class="sc-footer-actions">
+              <button type="button" class="sc-outline-btn" onclick="saveCharacterForm(true)">Taslak Kaydet</button>
+              <button type="button" class="btn primary" id="c-save-btn" onclick="saveCharacterForm(false)">Tamamlandı</button>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- 5. GRUP OLUŞTUR / DÜZENLE (SPICYCHAT BİREBİR) -->
+      <main id="view-group-create" class="view">
+        <div class="sc-form-wrap">
+          <div class="sc-form-card">
+            <input type="hidden" id="g-id" />
+            <input type="hidden" id="g-avatar-url" />
+
+            <div class="sc-form-head">
+              <h1 id="g-form-title">Grup Oluştur</h1>
+              <button type="button" class="btn small" onclick="openCreations('groups')">← Gruplar</button>
+            </div>
+
+            <!-- Kapak Görseli -->
+            <div class="sc-field">
+              <label class="sc-label">Kapak Görseli <span class="req">*</span></label>
+              <img id="g-avatar-preview" class="sc-square-preview hidden" src="" alt="Grup Kapağı" />
+              <div class="sc-btn-row">
+                <input type="file" id="g-avatar-file" accept="image/*" onchange="uploadGenericImage(this,'g-avatar-url','g-avatar-preview')" hidden />
+                <button type="button" class="sc-outline-btn" onclick="document.getElementById('g-avatar-file').click()">↑ Yükle</button>
+              </div>
+              <div class="sc-meta-row"><span>Grubun için bir kapak görseli seç</span></div>
+            </div>
+
+            <!-- Grup Adı -->
+            <div class="sc-field">
+              <label class="sc-label">Grup Adı <span class="req">*</span></label>
+              <input type="text" id="g-name" maxlength="50" placeholder="Örn: İstanbul Tayfası" oninput="updateGroupFormTokens()" />
+              <div class="sc-meta-row">
+                <span>Bu chatbotları birleştiren senaryo veya tema</span>
+                <span id="g-name-cnt">0/50</span>
+              </div>
+            </div>
+
+            <!-- Başlık -->
+            <div class="sc-field">
+              <label class="sc-label">Başlık <span class="req">*</span></label>
+              <textarea id="g-title" rows="2" maxlength="100" placeholder="Grubunu tanımlayan kısa cümle" oninput="updateGroupFormTokens()"></textarea>
+              <div class="sc-meta-row">
+                <span>Grubun kısa tanıtımı</span>
+                <span id="g-title-cnt">0/100</span>
+              </div>
+            </div>
+
+            <!-- Grup Üyeleri -->
+            <div class="sc-field">
+              <label class="sc-label">Grup Üyeleri (<span id="g-members-cnt">0</span> / 10) <span class="req">*</span></label>
+              <div id="g-members-chips" class="sc-attached-list"></div>
+              <button type="button" class="sc-outline-btn" onclick="openMemberPickerModal()">👥 Üye Ekle</button>
+            </div>
+
+            <!-- İlk Mesajı Kim Göndersin -->
+            <div class="sc-field">
+              <label class="sc-label">İlk mesajı kim göndersin?</label>
+              <div class="muted small-text" style="margin-bottom:6px;">Hiçbiri seçilmezse ilk mesajı grup anlatıcısı gönderir.</div>
+              <div id="g-first-speaker-pills" class="sc-attached-list"></div>
+            </div>
+
+            <!-- Karşılama Mesajı -->
+            <div class="sc-field">
+              <label class="sc-label">Karşılama Mesajı <span class="req">*</span></label>
+              <textarea id="g-greeting" rows="4" placeholder="Sohbeti başlatan ilk mesaj..." oninput="updateGroupFormTokens()"></textarea>
+              <div class="sc-meta-row">
+                <span>Sohbeti başlatmak için ne söyleyecekler?</span>
+                <span id="g-greeting-cnt">0 karakter / 0 token</span>
+              </div>
+            </div>
+
+            <!-- Etiketler -->
+            <div class="sc-field">
+              <label class="sc-label">Etiketler</label>
+              <div class="sc-tag-box" onclick="openTagDropdown('group')">
+                <div id="group-tag-chips" class="sc-chips-inline"></div>
+                <input type="text" id="group-tag-input" class="sc-tag-inp" placeholder="Etiket Ekle..." oninput="filterTagDropdown('group')" onkeydown="handleTagKey(event,'group')" onfocus="openTagDropdown('group')" />
+                <button type="button" class="sc-clear-x" onclick="event.stopPropagation();clearTags('group')">✕</button>
+              </div>
+              <div id="group-tag-dropdown" class="sc-tag-dropdown hidden"></div>
+              <div class="sc-meta-row">
+                <span>Grubu tanımlayan etiketler</span>
+                <span id="group-tag-cnt">0/12</span>
+              </div>
+            </div>
+
+            <!-- Senaryo -->
+            <div class="sc-field">
+              <label class="sc-label">Senaryo</label>
+              <textarea id="g-scenario" rows="4" placeholder="Grubun içinde bulunduğu ortak senaryo ve ortam..." oninput="updateGroupFormTokens()"></textarea>
+              <div class="sc-meta-row">
+                <span>Sohbetin geçtiği ortam ve bağlam</span>
+                <span id="g-scenario-cnt">0 karakter / 0 token</span>
+              </div>
+            </div>
+
+            <!-- Gruba Lorebook Bağla -->
+            <div class="sc-field">
+              <label class="sc-label">Lorebook</label>
+              <div id="g-attached-lorebooks" class="sc-attached-list"></div>
+              <button type="button" class="sc-outline-btn" onclick="openAttachLorebookModal('group')">+ Lorebook Bağla</button>
+              <div class="sc-meta-row"><span>Ortak dünya bağlamı için Lorebook bağla</span></div>
+            </div>
+
+            <div class="sc-token-summary">
+              <div class="sc-token-big" id="g-total-tokens">Token: 0 / 2400</div>
+              <div class="muted small-text">Daha fazla detay daha fazla bağlam token'ı kullanır.</div>
+            </div>
+
+            <div class="sc-footer-actions">
+              <button type="button" class="sc-outline-btn" onclick="saveGroupForm(true, false)">Taslak Olarak Kaydet</button>
+              <button type="button" class="btn primary" id="g-save-btn" onclick="saveGroupForm(false, true)">Grubu Oluştur ve Sohbet Et</button>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- 6. PERSONALARIM (TAM SAYFA 3 SÜTUNLU KART GALERİSİ) -->
+      <main id="view-personas" class="view">
+        <div class="ps-container">
+          <h1 class="mc-page-title">Personalarım</h1>
+          <div class="mc-search-wrap" style="margin-bottom:20px;">
+            <span class="mc-search-ico">🔍</span>
+            <input type="text" id="ps-search-input" placeholder="Ara..." oninput="renderPersonasView()" />
+          </div>
+          <div id="personas-grid" class="ps-grid"></div>
+          <div class="ps-bottom-bar">
+            <button type="button" class="btn primary ps-create-btn" onclick="openPersonaEditor(null)">+ Persona Oluştur</button>
+          </div>
+        </div>
+      </main>
+
+      <!-- 6B. PERSONA OLUŞTUR / DÜZENLE (SPICYCHAT BİREBİR) -->
+      <main id="view-persona-edit" class="view">
+        <div class="sc-form-wrap">
+          <div class="sc-form-card">
+            <input type="hidden" id="pe-id" />
+            <input type="hidden" id="pe-avatar-url" />
+
+            <div class="sc-form-head">
+              <h1 id="pe-form-title">Persona Düzenle</h1>
+              <button type="button" class="btn small" onclick="showView('personas')">← Personalarım</button>
+            </div>
+
+            <div class="sc-field">
+              <label class="sc-label">Avatar <span class="req">*</span></label>
+              <img id="pe-avatar-preview" class="sc-square-preview hidden" src="" alt="Persona Avatar" />
+              <div class="sc-btn-row">
+                <input type="file" id="pe-avatar-file" accept="image/*" onchange="uploadGenericImage(this,'pe-avatar-url','pe-avatar-preview')" hidden />
+                <button type="button" class="sc-outline-btn" onclick="document.getElementById('pe-avatar-file').click()">↑ Yükle</button>
+              </div>
+              <div class="sc-meta-row"><span>Personan için bir avatar seç</span></div>
+            </div>
+
+            <div class="sc-field">
+              <label class="sc-label">Ad <span class="req">*</span></label>
+              <input type="text" id="pe-name" maxlength="30" placeholder="Örn: Deniz" oninput="updateCounter('pe-name','pe-name-cnt',30)" />
+              <div class="sc-meta-row">
+                <span>Karakterinin görünen adı. Sohbette diğerleri onu bu şekilde görecek.</span>
+                <span id="pe-name-cnt">0/30</span>
+              </div>
+            </div>
+
+            <div class="sc-field">
+              <label class="sc-label">Öne Çıkan Bilgi <span class="req">*</span></label>
+              <textarea id="pe-desc" rows="5" maxlength="1000" placeholder="Görünüşünü, mesleğini, kişiliğini veya yapay zekânın bilmesi gereken önemli detayları yaz..." oninput="updateCounter('pe-desc','pe-desc-cnt',1000)"></textarea>
+              <div class="sc-meta-row">
+                <span>Yapay zekâya rehberlik etmek için arka plan bağlamı ekler.</span>
+                <span id="pe-desc-cnt">0/1000</span>
+              </div>
+            </div>
+
+            <div class="sc-field">
+              <label class="sc-label">Rulebook</label>
+              <div id="pe-attached-rulebook" class="sc-attached-list"></div>
+              <button type="button" class="sc-outline-btn" onclick="openAttachRulebookModal('persona')">+ Rulebook Bağla</button>
+              <div class="sc-meta-row">
+                <span>Bu personayı kullandığın sohbetler, karakterin Rulebook'u yerine bu personanın Rulebook'unu takip eder.</span>
+              </div>
+            </div>
+
+            <div class="rbe-switch-row" style="padding:10px 0;">
+              <div>
+                <div class="sc-label" style="margin:0;">Varsayılan Persona</div>
+                <div class="muted small-text">Yeni başlayan sohbetlerde otomatik olarak bu persona seçilir</div>
+              </div>
+              <label class="sw-toggle"><input type="checkbox" id="pe-default" /><span class="sw-slider"></span></label>
+            </div>
+
+            <div class="sc-footer-actions">
+              <button type="button" class="sc-outline-btn" onclick="showView('personas')">İptal</button>
+              <button type="button" class="btn primary" id="pe-save-btn" onclick="savePersonaForm()">Personayı Güncelle</button>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- 7. PROFİL AYARLARI (YALNIZCA SAĞ ÜST PROFİL BUTONUNDAN AÇILIR · YZ MODELİNE GÖNDERİLMEZ) -->
+      <main id="view-profile" class="view">
+        <div class="sc-form-wrap">
+          <div class="sc-form-card">
+            <input type="hidden" id="prof-avatar-url" />
+            <h1 class="sc-card-title" style="margin-bottom:18px;" data-i18n="page_profile">Profil Ayarları</h1>
+
+            <div class="sc-field">
+              <label class="sc-label">Kullanıcı Adı <span class="req">*</span></label>
+              <input type="text" id="prof-username" maxlength="20" placeholder="meir9" oninput="updateCounter('prof-username','prof-user-cnt',20)" />
+              <div class="sc-meta-row">
+                <span>Kartlarda görünecek kullanıcı adın (@etiket)</span>
+                <span id="prof-user-cnt">0/20</span>
+              </div>
+            </div>
+
+            <div class="sc-field">
+              <label class="sc-label">Ad <span class="req">*</span></label>
+              <input type="text" id="prof-name" maxlength="20" placeholder="Deniz" oninput="updateCounter('prof-name','prof-name-cnt',20)" />
+              <div class="sc-meta-row">
+                <span>Profilinde ve sağ üst köşede görünecek adın</span>
+                <span id="prof-name-cnt">0/20</span>
+              </div>
+            </div>
+
+            <div class="sc-field">
+              <label class="sc-label">Avatar</label>
+              <img id="prof-avatar-preview" class="sc-square-preview hidden" src="" alt="Profil" />
+              <div class="sc-btn-row">
+                <input type="file" id="prof-avatar-file" accept="image/*" onchange="uploadGenericImage(this,'prof-avatar-url','prof-avatar-preview')" hidden />
+                <button type="button" class="sc-outline-btn" onclick="document.getElementById('prof-avatar-file').click()">↑ Yükle</button>
+              </div>
+              <div class="sc-meta-row"><span>Sağ üst köşede ve profilinde görünecek fotoğraf</span></div>
+            </div>
+
+            <div class="sc-field">
+              <label class="sc-label">Öne Çıkanlar</label>
+              <textarea id="prof-highlights" rows="4" maxlength="1000" placeholder="Kendinle ilgili kişisel notlar..." oninput="updateCounter('prof-highlights','prof-hl-cnt',1000)"></textarea>
+              <div class="sc-meta-row">
+                <span>Sadece kişisel profil bilgindir; yapay zekâ modeline gönderilmez.</span>
+                <span id="prof-hl-cnt">0/1000</span>
+              </div>
+            </div>
+
+            <div style="margin-top:8px;">
+              <button type="button" class="sc-outline-btn" onclick="saveProfileSection()">Profili Kaydet</button>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- 7A. AYARLAR (SOL MENÜDEKİ AYARLAR BUTONUNDAN AÇILIR) -->
+      <main id="view-settings" class="view">
+        <div class="sc-form-wrap settings-form-wrap">
+          <div class="sc-form-card">
+            <h1 class="sc-card-title" style="margin-bottom:18px;" data-i18n="nav_settings">Ayarlar</h1>
+
+            <!-- GENEL AYARLAR -->
+            <div id="prof-general-section">
+              <h2 class="prof-sub-title" data-i18n="lbl_general">Genel</h2>
+
+              <div class="prof-setting-row">
+                <span class="prof-row-ico">🔥</span>
+                <div class="prof-row-info">
+                  <b>Yetişkin İçeriği Göster</b>
+                  <span>18 yaşından büyük olduğunu onayla</span>
+                </div>
+                <label class="sw-toggle"><input type="checkbox" id="prof-show-nsfw" onchange="saveAllSettings()" /><span class="sw-slider"></span></label>
+              </div>
+
+              <div class="prof-setting-row">
+                <span class="prof-row-ico">🙈</span>
+                <div class="prof-row-info">
+                  <b>Hassas Görselleri Bulanıklaştır</b>
+                  <span>NSFW etiketli kart kapaklarını bulanıklaştırır</span>
+                </div>
+                <label class="sw-toggle"><input type="checkbox" id="prof-blur-nsfw" onchange="saveAllSettings()" /><span class="sw-slider"></span></label>
+              </div>
+
+              <div class="prof-setting-row">
+                <span class="prof-row-ico">🎭</span>
+                <div class="prof-row-info">
+                  <b>Yeni Sohbette Persona Seçimini Sor</b>
+                  <span>Yeni bir sohbet başlatırken hangi persona ile gireceğini seçtirir</span>
+                </div>
+                <label class="sw-toggle"><input type="checkbox" id="prof-ask-persona" onchange="saveAllSettings()" /><span class="sw-slider"></span></label>
+              </div>
+
+              <!-- Uygulama & AI Motor Merkezi (Tek Çatı Yönetim) -->
+              <div class="prof-setting-row clickable" onclick="toggleProfSub('prof-sub-engine');refreshEngineOverview();">
+                <span class="prof-row-ico">🚀</span>
+                <div class="prof-row-info">
+                  <b>Uygulama & AI Motor Merkezi</b>
+                  <span>Tek çatı başlatıcı: LM Studio / Turbo llama-server, VRAM ve profiller</span>
+                </div>
+                <span class="prof-row-val" id="prof-val-engine">LM Studio</span>
+                <span class="muted">›</span>
+              </div>
+              <div id="prof-sub-engine" class="prof-subpanel hidden">
+                <div id="engine-live-box" class="rbe-subbox small-text" style="margin-bottom:6px;">
+                  <div>Durum: <b id="eng-status-badge">Kontrol ediliyor...</b></div>
+                  <div class="muted" id="eng-detected-info"></div>
+                </div>
+                <div class="row-2">
+                  <label>Başlangıç AI Motoru
+                    <select id="set-app-engine-mode" onchange="saveAllSettings()">
+                      <option value="lmstudio">LM Studio (Otomatik Başlat & Yükle)</option>
+                      <option value="llama_server">Turbo llama-server (Penceresiz, En Hızlı)</option>
+                      <option value="manual">Manuel (Sunucuyu Kendim Açarım)</option>
+                    </select>
+                  </label>
+                  <label>Otomatik Yüklenecek Model Anahtarı
+                    <input type="text" id="set-app-model-key" placeholder="gemma" onchange="saveAllSettings()" />
+                  </label>
+                </div>
+                <div class="row-2">
+                  <label>Turbo MoE CPU Katmanı (--n-cpu-moe)
+                    <input type="number" id="set-app-cpu-moe" min="0" max="40" placeholder="26" onchange="saveAllSettings()" />
+                  </label>
+                  <label>Bağlam Uzunluğu (Turbo Context)
+                    <input type="number" id="set-app-ctx-size" step="512" min="2048" max="16384" placeholder="4096" onchange="saveAllSettings()" />
+                  </label>
+                </div>
+                <label>Özel GGUF Dosya Yolu (Turbo mod için — boş bırakırsan LM Studio klasöründe otomatik arar)
+                  <input type="text" id="set-app-gguf-path" placeholder="Boş = Otomatik bul" onchange="saveAllSettings()" />
+                </label>
+                <label class="checkbox-row">
+                  <input type="checkbox" id="set-app-unload-exit" onchange="saveAllSettings()" /> Uygulama kapanınca modeli VRAM'den boşalt (ekran kartı belleğini serbest bırakır)
+                </label>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;">
+                  <button type="button" class="btn small primary" id="btn-eng-start" onclick="startEngineFromUI()">▶ Motoru Başlat & Modeli Yükle</button>
+                  <button type="button" class="btn small danger" id="btn-eng-unload" onclick="unloadEngineFromUI()">⏹ VRAM Boşalt (Eject)</button>
+                  <button type="button" class="btn small" onclick="openAppDataFolder()">📁 Veri & Yedek Klasörünü Aç</button>
+                </div>
+                <label><span data-i18n="speed_mode">Yanıt Hız Modu</span>
+                  <select id="set-speed-mode" onchange="applySpeedMode(this.value, 'profile')">
+                    <option value="ultra">⚡ Ultra Hızlı (~5 sn hedef — 1-2 paragraf, 180 token)</option>
+                    <option value="turbo" data-i18n="speed_turbo">🚀 Turbo (Hızlı — 2-3 paragraf, 280 token)</option>
+                    <option value="balanced" data-i18n="speed_balanced">⚖ Dengeli (12 mesaj, 460 token)</option>
+                    <option value="long" data-i18n="speed_long">📖 Uzun & Detaylı (16 mesaj, 750 token)</option>
+                  </select>
+                </label>
+                <div style="border-top:1px solid var(--border);padding-top:10px;margin-top:6px;">
+                  <div class="small-text muted" style="margin-bottom:6px;">Tek Tık Model Profili (.bat çalıştırmadan anında uygular):</div>
+                  <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                    <button type="button" class="btn small" onclick="applyAppModelProfile('gemma4')">⚡ Gemma 4 Turbo Profili (Temp 0.85, Top-K 64)</button>
+                    <button type="button" class="btn small" onclick="applyAppModelProfile('qwen')">⚡ Qwen 3.5 Profili (Temp 0.70, Top-K 20)</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Hibrit Bulut & iPhone Merkezi (PC ↔ iPhone Eş Zamanlı Senkron + Kaggle GPU / Ücretsiz API) -->
+              <div class="prof-setting-row clickable" onclick="toggleProfSub('prof-sub-cloud');refreshCloudOverview();">
+                <span class="prof-row-ico">📱</span>
+                <div class="prof-row-info">
+                  <b>Hibrit Bulut & iPhone Merkezi</b>
+                  <span>PC kapalıyken iPhone erişimi, Kaggle GPU (0 sansür) ve Ücretsiz Bulut API</span>
+                </div>
+                <span class="prof-row-val" id="prof-val-cloud">Hibrit</span>
+                <span class="muted">›</span>
+              </div>
+              <div id="prof-sub-cloud" class="prof-subpanel hidden">
+                <div id="cloud-live-box" class="rbe-subbox small-text" style="margin-bottom:6px;">
+                  <div>Veritabanı & Senkron: <b id="cld-db-badge">Kontrol ediliyor...</b></div>
+                  <div class="muted" id="cld-runtime-info"></div>
+                </div>
+                <div class="row-2">
+                  <label>iPhone / Bulut Motor Modu
+                    <select id="set-cloud-llm-mode" onchange="saveCloudHybridSettings(false)">
+                      <option value="hybrid_auto">⚡ Hibrit Otomatik (Kaggle GPU → Ücretsiz API)</option>
+                      <option value="kaggle">🚀 Sadece Kaggle / Colab GPU (Kendi Modelin)</option>
+                      <option value="cloud_api">☁ Sadece Ücretsiz Bulut API (0 Bekleme)</option>
+                    </select>
+                  </label>
+                  <label>PC Masaüstü Motor Modu
+                    <select id="set-pc-llm-mode" onchange="saveCloudHybridSettings(false)">
+                      <option value="local">🖥 Yerel PC (LM Studio / llama-server)</option>
+                      <option value="hybrid_auto">⚡ Hibrit Otomatik (Kaggle → API)</option>
+                      <option value="kaggle">🚀 Kaggle / Colab GPU</option>
+                      <option value="cloud_api">☁ Ücretsiz Bulut API</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="row-2">
+                  <label>Kaggle / Colab GPU Tünel Adresi (Notebook açınca otomatik dolar)
+                    <input type="text" id="set-remote-gpu-url" placeholder="https://xxxx.trycloudflare.com/v1" />
+                  </label>
+                  <label>Kaggle GPU Model Adı (Boş = Otomatik)
+                    <input type="text" id="set-remote-gpu-model" placeholder="Otomatik" />
+                  </label>
+                </div>
+                <div style="border-top:1px solid var(--border);padding-top:10px;margin-top:4px;">
+                  <div class="small-text muted" style="margin-bottom:6px;">Ücretsiz Bulut API Yedek Motoru (Tek tıkla doldur):</div>
+                  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;">
+                    <button type="button" class="btn small" onclick="applyFreeApiPreset('openrouter')">🌐 OpenRouter (Ücretsiz)</button>
+                    <button type="button" class="btn small" onclick="applyFreeApiPreset('groq')">⚡ Groq (Ücretsiz Hızlı)</button>
+                    <button type="button" class="btn small" onclick="applyFreeApiPreset('nvidia')">💚 NVIDIA NIM (Ücretsiz)</button>
+                  </div>
+                </div>
+                <div class="row-2">
+                  <label>Bulut API Adresi
+                    <input type="text" id="set-cloud-api-url" placeholder="https://openrouter.ai/api/v1" />
+                  </label>
+                  <label>Bulut API Modeli
+                    <input type="text" id="set-cloud-api-model" placeholder="google/gemma-3-27b-it:free" />
+                  </label>
+                </div>
+                <label>Bulut API Anahtarı (Ücretsiz OpenRouter / Groq / NVIDIA anahtarın)
+                  <input type="password" id="set-cloud-api-key" placeholder="sk-or-... veya gsk_... (boş bırakırsan sadece Kaggle GPU kullanılır)" style="width:100%;background:var(--bg-elev);border:1px solid var(--border);color:var(--text);padding:9px 12px;border-radius:8px;font-size:14px;" />
+                </label>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:4px;">
+                  <button type="button" class="btn small primary" onclick="saveCloudHybridSettings(true)">💾 Hibrit Ayarları Kaydet & Test Et</button>
+                  <span id="cld-save-msg" class="small-text muted"></span>
+                </div>
+              </div>
+
+              <!-- Varsayılan Model (Açılır Panel) -->
+              <div class="prof-setting-row clickable" onclick="toggleProfSub('prof-sub-model')">
+                <span class="prof-row-ico">✦</span>
+                <div class="prof-row-info">
+                  <b>Varsayılan Model</b>
+                  <span>LM Studio yerel bağlantısı ve model seçimi</span>
+                </div>
+                <span class="prof-row-val" id="prof-val-model">Otomatik</span>
+                <span class="muted">›</span>
+              </div>
+              <div id="prof-sub-model" class="prof-subpanel hidden">
+                <div class="row-2">
+                  <label>LM Studio API Adresi <input type="text" id="set-api-url" /></label>
+                  <label>Model <input type="text" id="set-model" list="model-list" placeholder="Otomatik" /><datalist id="model-list"></datalist></label>
+                </div>
+                <button type="button" class="btn small primary" onclick="saveAllSettings()">Bağlantıyı Kaydet</button>
+              </div>
+
+              <!-- Arayüz Dili (10 Dil) -->
+              <div class="prof-setting-row clickable" onclick="toggleProfSub('prof-sub-ui-lang')">
+                <span class="prof-row-ico">🌐</span>
+                <div class="prof-row-info">
+                  <b data-i18n="lbl_ui_lang">Arayüz Dili</b>
+                  <span data-i18n="lbl_ui_lang_sub">Uygulama menülerinin ve butonların dili</span>
+                </div>
+                <span class="prof-row-val" id="prof-val-ui-lang">Türkçe</span>
+                <span class="muted">›</span>
+              </div>
+              <div id="prof-sub-ui-lang" class="prof-subpanel hidden">
+                <select id="set-ui-lang" onchange="onChangeUiLang(this.value)">
+                  <option value="tr">Türkçe</option>
+                  <option value="az">Azərbaycanca (Azerbaycan Türkçesi)</option>
+                  <option value="en">English (İngilizce)</option>
+                  <option value="ru">Русский (Rusça)</option>
+                  <option value="de">Deutsch (Almanca)</option>
+                  <option value="fr">Français (Fransızca)</option>
+                  <option value="es">Español (İspanyolca)</option>
+                  <option value="it">Italiano (İtalyanca)</option>
+                  <option value="zh">中文 (Çince)</option>
+                  <option value="ja">日本語 (Japonca)</option>
+                </select>
+              </div>
+
+              <!-- Tercih Edilen Sohbet Dili (10 Dil) -->
+              <div class="prof-setting-row clickable" onclick="toggleProfSub('prof-sub-lang')">
+                <span class="prof-row-ico">文</span>
+                <div class="prof-row-info">
+                  <b data-i18n="lbl_chat_lang">Tercih Edilen Sohbet Dili</b>
+                  <span data-i18n="lbl_chat_lang_sub">Yapay zekânın sohbette konuşacağı dil</span>
+                </div>
+                <span class="prof-row-val" id="prof-val-lang">Türkçe</span>
+                <span class="muted">›</span>
+              </div>
+              <div id="prof-sub-lang" class="prof-subpanel hidden">
+                <select id="set-lang" onchange="document.getElementById('prof-val-lang').textContent=this.options[this.selectedIndex].text;saveAllSettings();">
+                  <option value="Türkçe">Türkçe</option>
+                  <option value="Azerbaycan Türkçesi">Azərbaycanca (Azerbaycan Türkçesi)</option>
+                  <option value="English">English (İngilizce)</option>
+                  <option value="Русский">Русский (Rusça)</option>
+                  <option value="Deutsch">Deutsch (Almanca)</option>
+                  <option value="Français">Français (Fransızca)</option>
+                  <option value="Español">Español (İspanyolca)</option>
+                  <option value="Italiano">Italiano (İtalyanca)</option>
+                  <option value="中文">中文 (Çince)</option>
+                  <option value="日本語">日本語 (Japonca)</option>
+                </select>
+              </div>
+
+              <!-- Sohbet Görünümü -->
+              <div class="prof-setting-row clickable" onclick="toggleProfSub('prof-sub-appearance')">
+                <span class="prof-row-ico">🎨</span>
+                <div class="prof-row-info">
+                  <b>Sohbet Görünümü</b>
+                  <span>Tema, yazı boyutu ve sohbet arka planı</span>
+                </div>
+                <span class="muted">›</span>
+              </div>
+              <div id="prof-sub-appearance" class="prof-subpanel hidden">
+                <div class="row-2">
+                  <label>Tema
+                    <select id="set-theme" onchange="document.documentElement.setAttribute('data-theme',this.value);saveAllSettings();">
+                      <option value="dark">Koyu Tema</option>
+                      <option value="light">Açık Tema</option>
+                    </select>
+                  </label>
+                  <label>Yazı Boyutu (px) <input type="number" id="set-font-size" min="12" max="22" onchange="saveAllSettings()" /></label>
+                </div>
+                <label>Sohbet Arka Planı
+                  <div style="display:flex;gap:6px;">
+                    <input type="text" id="set-bg-url" placeholder="URL veya görsel yükle" style="flex:1;" />
+                    <label class="btn small" style="margin:0;">Yükle<input type="file" accept="image/*" onchange="uploadBg(this)" hidden /></label>
+                    <button type="button" class="btn small primary" onclick="saveAllSettings()">Uygula</button>
+                  </div>
+                </label>
+              </div>
+
+              <!-- Gelişmiş (Advanced) -->
+              <div style="margin-top:16px;">
+                <button type="button" class="sc-outline-btn" id="prof-adv-btn" onclick="toggleProfSub('prof-sub-advanced')">Gelişmiş ⌄</button>
+              </div>
+              <div id="prof-sub-advanced" class="prof-subpanel hidden" style="margin-top:12px;">
+                <div class="row-2">
+                  <label>Anlatım Tarzı
+                    <select id="set-tone">
+                      <option value="emotional">🎭 Duygulu & Karaktere Sadık (Önerilen)</option>
+                      <option value="dramatic">🎬 Sinematik & Dramatik</option>
+                      <option value="balanced">⚖ Dengeli & Doğal</option>
+                      <option value="soft_emotional">💗 Yoğun Duygusal & Romantik</option>
+                    </select>
+                  </label>
+                  <label>Üretim Hazır Ayarı (Preset)
+                    <select id="set-preset" onchange="applyPreset()">
+                      <option value="gemma4_rp">Gemma 4 (26B-A4B / Heretic) Türkçe RP (Temp 0.85, Top-K 64)</option>
+                      <option value="qwen35_rp">Qwen 3.5 (9B) Türkçe RP (Temp 0.70, Top-K 20)</option>
+                      <option value="turkish_rp">Dengeli Türkçe RP (Temp 0.76, Rep 1.06)</option>
+                      <option value="precise">Çok Net / Sıfır Bozulma (Temp 0.55)</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="row-2">
+                  <label>Yaratıcılık (Temp) <input type="number" id="set-temp" step="0.02" min="0" max="2" /></label>
+                  <label>Tekrar Cezası (Rep Penalty) <input type="number" id="set-rep" step="0.02" min="1" max="1.5" /></label>
+                </div>
+                <div class="row-2">
+                  <label>Top-P <input type="number" id="set-top-p" step="0.01" min="0.1" max="1" /></label>
+                  <label>Top-K (Gemma 4: 64 / Qwen: 20) <input type="number" id="set-top-k" step="1" min="0" max="200" /></label>
+                </div>
+                <div class="row-2">
+                  <label>Min-P (Bozuk Kelime Filtresi) <input type="number" id="set-min-p" step="0.01" min="0" max="0.5" /></label>
+                  <label>En Uzun Cevap (Tokens) <input type="number" id="set-max-tokens" step="128" min="256" max="8192" /></label>
+                </div>
+                <div class="row-2">
+                  <label>Tekrar Önleyici (Presence) <input type="number" id="set-pres-pen" step="0.05" min="0" max="1.5" /></label>
+                  <label>Sıklık Cezası (Frequency) <input type="number" id="set-freq-pen" step="0.05" min="0" max="1.5" /></label>
+                </div>
+                <div class="row-2">
+                  <label>Hatırlanacak Son Mesaj Sayısı <input type="number" id="set-ctx-msgs" min="6" max="50" /></label>
+                  <label>Otomatik Özetleme Sıklığı (Mesaj) <input type="number" id="set-auto-sum-every" min="6" max="40" /></label>
+                </div>
+                <label class="checkbox-row"><input type="checkbox" id="set-no-think" /> Hızlı Mod (Düşünme bloğunu kapatır — 3x hızlı yanıt)</label>
+                <label class="checkbox-row"><input type="checkbox" id="set-auto-mem" /> Otomatik Arka Plan Hafızası (Uzun sohbetleri otomatik özetler)</label>
+                <label class="checkbox-row"><input type="checkbox" id="set-strict" /> Yüksek Tutarlılık Çapası (Her turda sahne & konum hatırlatması)</label>
+                <label class="checkbox-row"><input type="checkbox" id="set-live-stream" /> Canlı Akış / Daktilo Modu (Kapalı = Yanıt bitince tek seferde temiz görünür)</label>
+                <label class="checkbox-row"><input type="checkbox" id="set-ai-judge" /> Arka Plan AI Gösterge Hakemi (Kapalı önerilir — açıkken yerel GPU KV-Cache'ini sıfırlayabilir)</label>
+                <div class="sub-header" style="margin-top:8px;">
+                  <span class="small-text muted">Genel Sistem Talimatı</span>
+                  <button type="button" class="btn small" onclick="applyTurkishOptimalSettings()">🇹🇷 Akıcı Türkçe + Duygu Ayarlarını Uygula</button>
+                </div>
+                <textarea id="set-sys-prompt" rows="4" style="width:100%;"></textarea>
+                <div style="display:flex;justify-content:flex-end;margin-top:10px;">
+                  <button type="button" class="btn primary" onclick="saveAllSettings()">Tüm Ayarları Kaydet</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+            <!-- 7B. YENİ SOHBET PERSONA SEÇİM EKRANI (SPICYCHAT BİREBİR) -->
+      <main id="view-persona-picker" class="view">
+        <div class="pp-container">
+          <button type="button" class="pp-back-btn" onclick="goBackFromPersonaPicker()">‹ Geri</button>
+          <h1 id="pp-heading" class="pp-title">Chatbot ile kim sohbet edecek?</h1>
+
+          <div class="pp-search-wrap">
+            <input type="text" id="pp-search-input" placeholder="Ara..." oninput="renderPersonaPicker()" />
+          </div>
+
+          <!-- Merkez Görsel: Seçili Persona <-> Hedef Chatbot -->
+          <div class="pp-versus-row">
+            <div class="pp-versus-av-wrap">
+              <img id="pp-sel-av" class="pp-versus-av hidden" src="" alt="" />
+              <div id="pp-sel-av-fb" class="pp-versus-av-fb">P</div>
+              <span class="pp-mask-badge" title="Seçili Persona">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 5 2 9.5c0 4.8 3.6 10.2 10 12.5 6.4-2.3 10-7.7 10-12.5C22 5 17.5 2 12 2zm-3.5 8.5c-.8 0-1.5-.7-1.5-1.5S7.7 7.5 8.5 7.5 10 8.2 10 9s-.7 1.5-1.5 1.5zm7 0c-.8 0-1.5-.7-1.5-1.5s.7-1.5 1.5-1.5S17 8.2 17 9s-.7 1.5-1.5 1.5zM12 16.5c-2.1 0-3.8-1.1-4.5-2.5h9c-.7 1.4-2.4 2.5-4.5 2.5z"/></svg>
+              </span>
+            </div>
+
+            <div class="pp-arrow-wrap" aria-hidden="true">
+              <svg viewBox="0 0 64 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="6" y1="10" x2="58" y2="10"/>
+                <polyline points="12 5 6 10 12 15"/>
+                <polyline points="52 5 58 10 52 15"/>
+              </svg>
+            </div>
+
+            <div class="pp-versus-av-wrap">
+              <img id="pp-bot-av" class="pp-versus-av hidden" src="" alt="" />
+              <div id="pp-bot-av-fb" class="pp-versus-av-fb">C</div>
+            </div>
+          </div>
+
+          <!-- 3 Sütunlu Persona Seçim Izgarası -->
+          <div id="pp-grid" class="pp-grid"></div>
+
+          <!-- Alt Seçenek & Başlat Butonu -->
+          <div class="pp-dont-show-row">
+            <label class="pp-chk-label">
+              <input type="checkbox" id="pp-dont-show" />
+              <span>Bunu bir daha gösterme</span>
+            </label>
+          </div>
+
+          <div class="pp-actions">
+            <button type="button" id="pp-start-btn" class="btn primary pp-submit-btn" onclick="confirmPersonaPicker()">Sohbete Başla</button>
+            <button type="button" class="pp-manage-link" onclick="showView('personas')">Personaları Yönet</button>
+            <button type="button" id="pp-resume-btn" class="pp-resume-link hidden" onclick="resumeFromPersonaPicker()">Veya son sohbete devam et →</button>
+          </div>
+        </div>
+      </main>
+
+      <!-- 8. SOHBET EKRANI (SPICYCHAT BİREBİR TASARIM & MENÜLER) -->
+      <main id="view-chat" class="view chat-layout">
+        <div class="chat-stage" id="chat-main-bg">
+          <!-- ÜST BAŞLIK + KOMPAKT RULEBOOK HUD -->
+          <div class="chat-top-wrap">
+            <div class="chat-col-inner">
+              <div class="sc-chat-header">
+                <div class="sc-chat-char">
+                  <img id="chat-char-avatar" class="sc-chat-av hidden" src="" alt="" />
+                  <div id="chat-char-avatar-fb" class="sc-chat-av-fb">C</div>
+                  <div class="sc-chat-char-meta">
+                    <div id="chat-char-name" class="sc-chat-name">Chatbot</div>
+                    <div id="chat-char-title" class="sc-chat-handle">@meir9</div>
+                  </div>
+                </div>
+                <div class="sc-chat-head-btns">
+                  <button type="button" id="btn-chat-memory" class="sc-round-ico-btn mem-btn-wrap" onclick="openMemoryModal()" title="Sohbet Hafızası & Kalıcı Notlar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M9.5 2A2.5 2.5 0 0 0 7 4.5v.5A2.5 2.5 0 0 0 4.5 7.5a2.5 2.5 0 0 0 .5 1.5 2.5 2.5 0 0 0-1 2 2.5 2.5 0 0 0 1.5 2.3A2.5 2.5 0 0 0 7 18a2.5 2.5 0 0 0 2.5 2.5H12V2H9.5z"/><path d="M14.5 2A2.5 2.5 0 0 1 17 4.5v.5A2.5 2.5 0 0 1 19.5 7.5a2.5 2.5 0 0 1-.5 1.5 2.5 2.5 0 0 1 1 2 2.5 2.5 0 0 1-1.5 2.3A2.5 2.5 0 0 1 17 18a2.5 2.5 0 0 1-2.5 2.5H12V2h2.5z"/></svg>
+                    <span id="mem-active-dot" class="mem-active-dot hidden"></span>
+                  </button>
+                  <button type="button" id="btn-chat-hud-quick" class="sc-round-ico-btn" onclick="openChatSparkleMenu(event)" title="Hafıza, Göstergeler & Grup">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6L12 3z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z"/></svg>
+                  </button>
+                  <div class="sc-menu-anchor">
+                    <button type="button" id="btn-chat-more" class="sc-round-ico-btn" onclick="toggleChatOptionsMenu(event)" title="Sohbet Menüsü">
+                      <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="19" cy="12" r="1.9"/></svg>
+                    </button>
+
+                    <!-- GÖRSEL 1 BİREBİR EKSİKSİZ CHAT MENÜSÜ (KOYU GRİ) -->
+                    <div id="chat-options-menu" class="sc-chat-dropdown hidden" onclick="event.stopPropagation()">
+                      <button type="button" class="sc-dd-item" onclick="closeChatOptionsMenu();startNewChat()">
+                        <span class="sc-dd-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="12" y1="8" x2="12" y2="14"/><line x1="9" y1="11" x2="15" y2="11"/></svg></span>
+                        <span class="sc-dd-texts"><b data-i18n="menu_start_chat">Sohbet Başlat</b><small data-i18n="menu_start_chat_sub">Mevcut sohbet kaydedilecek</small></span>
+                      </button>
+
+                      <button type="button" class="sc-dd-item" onclick="closeChatOptionsMenu();openSavedChatsPage()">
+                        <span class="sc-dd-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1" fill="currentColor"/><circle cx="4" cy="12" r="1" fill="currentColor"/><circle cx="4" cy="18" r="1" fill="currentColor"/></svg></span>
+                        <span class="sc-dd-texts"><b data-i18n="menu_saved_chats">Kayıtlı Sohbetleri Gör</b></span>
+                      </button>
+
+                      <button type="button" class="sc-dd-item" onclick="closeChatOptionsMenu();toggleBulkRemoveMode(true)">
+                        <span class="sc-dd-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></span>
+                        <span class="sc-dd-texts"><b data-i18n="menu_remove_msgs">Mesajları Sil</b></span>
+                      </button>
+
+                      <button type="button" class="sc-dd-item" onclick="closeChatOptionsMenu();openChangePersonaModal()">
+                        <span class="sc-dd-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21c4.5-1.5 8-5.5 8-10V6l-8-3-8 3v5c0 4.5 3.5 8.5 8 10z"/><circle cx="9.5" cy="10.5" r="1" fill="currentColor"/><circle cx="14.5" cy="10.5" r="1" fill="currentColor"/><path d="M9.5 14.5c.8.8 1.6 1.2 2.5 1.2s1.7-.4 2.5-1.2"/></svg></span>
+                        <span class="sc-dd-texts"><b data-i18n="menu_change_persona">Persona Değiştir</b></span>
+                      </button>
+
+                      <button type="button" class="sc-dd-item" onclick="closeChatOptionsMenu();cloneCurrentChat()">
+                        <span class="sc-dd-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span>
+                        <span class="sc-dd-texts"><b data-i18n="menu_clone">Sohbeti Klonla</b></span>
+                      </button>
+
+                      <button type="button" class="sc-dd-item" onclick="closeChatOptionsMenu();openRenameChatModal()">
+                        <span class="sc-dd-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></span>
+                        <span class="sc-dd-texts"><b data-i18n="menu_rename">Başlığı Değiştir</b></span>
+                      </button>
+
+                      <button type="button" class="sc-dd-item" onclick="closeChatOptionsMenu();openAttachRulebookModal('chat')">
+                        <span class="sc-dd-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5l1-4h12l1 4z"/><path d="M7 17c0-3 2-5 2-8 0-1.5-1-3-1-4 2-1 4-2 6-2 2 0 3.5 1.5 4 3.5l-2.5 1.5 1 2.5H13c0 2.5 2 4 2 6.5"/></svg></span>
+                        <span class="sc-dd-texts"><b data-i18n="menu_attach_rb">Rulebook Bağla</b></span>
+                      </button>
+
+                      <button type="button" class="sc-dd-item" onclick="closeChatOptionsMenu();editActiveChatbot()">
+                        <span class="sc-dd-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span>
+                        <span class="sc-dd-texts"><b data-i18n="menu_edit_bot">Chatbot'u Düzenle</b></span>
+                      </button>
+
+                      <button type="button" class="sc-dd-item" onclick="closeChatOptionsMenu();openVoiceModal()">
+                        <span class="sc-dd-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
+                        <span class="sc-dd-texts"><b data-i18n="menu_set_voice">Ses Ayarları</b></span>
+                      </button>
+
+                      <button type="button" class="sc-dd-item" onclick="closeChatOptionsMenu();openChatAppearanceModal()">
+                        <span class="sc-dd-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 4V2M15 16v-2M8 9h2M20 9h2M17.8 11.8L19 13M15 9h0M17.8 6.2L19 5M3 21l9-9M12.2 6.2L11 5"/></svg></span>
+                        <span class="sc-dd-texts"><b data-i18n="menu_appearance">Sohbet Görünümü</b><small data-i18n="menu_appearance_sub">Tema, renkler, metin ve balonlar</small></span>
+                      </button>
+
+                      <button type="button" class="sc-dd-item" onclick="closeChatOptionsMenu();openGenSettingsModal()">
+                        <span class="sc-dd-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></span>
+                        <span class="sc-dd-texts"><b data-i18n="menu_gen_settings">Üretim Ayarları</b></span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Kompakt 4 Sütunlu Rulebook Göstergeleri + Durum Satırı -->
+              <div id="hud-bar" class="sc-hud-wrap hidden"></div>
+              <div id="hud-notify" class="hud-notify hidden"></div>
+            </div>
+          </div>
+
+          <!-- TOPLU MESAJ SİLME ÇUBUĞU (Mesajları Sil modunda görünür) -->
+          <div id="bulk-remove-bar" class="bulk-remove-bar hidden">
+            <div class="chat-col-inner bulk-remove-inner">
+              <span id="bulk-remove-count">0 mesaj seçildi</span>
+              <div style="display:flex;gap:8px;">
+                <button type="button" class="btn small" onclick="toggleBulkRemoveMode(false)">İptal</button>
+                <button type="button" class="btn small danger" onclick="confirmBulkRemoveMessages()">Seçilenleri Sil</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAM GENİŞLİKTE KAYDIRILABİLİR SOHBET ALANI -->
+          <div id="chat-messages" class="chat-messages sc-chat-scroll"></div>
+
+          <!-- ALT MESAJ YAZMA ÇUBUĞU (GÖRSEL 2, 3, 4 BİREBİR) -->
+          <div class="chat-composer sc-composer-wrap">
+            <div class="chat-col-inner">
+              <!-- Yanıt Önerileri Çekmecesi (💡 Öner butonundan açılır) -->
+              <div id="suggest-tray" class="suggest-tray hidden">
+                <div class="suggest-tray-head">
+                  <span>💡 Yanıt Önerileri</span>
+                  <div style="display:flex;gap:6px;">
+                    <button type="button" class="btn small" onclick="requestReplySuggestions(true)">↻ Yenile</button>
+                    <button type="button" class="sc-circle-x" onclick="closeSuggestTray()">✕</button>
+                  </div>
+                </div>
+                <div id="suggest-list" class="suggest-list"></div>
+              </div>
+
+              <!-- Eklenen Görsel Önizleme & Aktif Mod Rozetleri -->
+              <div id="composer-meta-row" class="composer-meta-row hidden">
+                <div id="chat-img-preview-chip" class="chat-img-preview-chip hidden">
+                  <img id="chat-img-preview-thumb" src="" alt="Eklenen görsel" />
+                  <span>Görsel eklendi (AI inceleyecek)</span>
+                  <button type="button" onclick="clearPendingChatImage()" title="Görseli kaldır">✕</button>
+                </div>
+                <div id="web-search-badge" class="composer-mode-badge hidden">
+                  <span>🌐 Web Araması Aktif</span>
+                  <button type="button" onclick="toggleWebSearchMode(false)">✕</button>
+                </div>
+              </div>
+
+              <div id="thinking-indicator" class="thinking-bar hidden"><span class="pulse-dot"></span> Yanıt hazırlanıyor...</div>
+
+              <div class="sc-composer-bar">
+                <!-- 1. ARTI (+) BUTONU + GÖRSEL 2 POPUP MENÜSÜ -->
+                <div class="sc-plus-anchor">
+                  <div id="composer-plus-menu" class="sc-plus-menu hidden" onclick="event.stopPropagation()">
+                    <button type="button" class="sc-pm-item" onclick="closePlusMenu();triggerChatImageUpload()">
+                      <span class="sc-pm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span>
+                      <span>Resim Ekle</span>
+                    </button>
+                    <button type="button" class="sc-pm-item" id="pm-web-search-btn" onclick="toggleWebSearchMode();closePlusMenu()">
+                      <span class="sc-pm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+                      <span>Web Araması</span>
+                      <span id="pm-web-check" class="pm-check hidden">✓</span>
+                    </button>
+                    <button type="button" class="sc-pm-item" onclick="closePlusMenu();insertDirectorCmd()">
+                      <span class="sc-pm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg></span>
+                      <span>Komut (OOC)</span>
+                    </button>
+                  </div>
+
+                  <button type="button" id="btn-composer-plus" class="sc-comp-round" onclick="togglePlusMenu(event)" data-tip="Ekle">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </button>
+                </div>
+
+                <!-- 2. RESİM BUTONU (GÖRSEL 3 — SADECE RESİM EKLEME, OLUŞTURMA YOK) -->
+                <button type="button" id="btn-composer-image" class="sc-comp-round has-tip" onclick="triggerChatImageUpload()" data-i18n-tip="tip_img" data-tip="Resim">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                </button>
+                <input type="file" id="chat-image-file" accept="image/*" onchange="handleChatImageSelected(this)" hidden />
+
+                <!-- 3. ÖNER BUTONU (GÖRSEL 4 — AMPUL / SUGGEST) -->
+                <button type="button" id="btn-composer-suggest" class="sc-comp-round has-tip" onclick="requestReplySuggestions(false)" data-i18n-tip="tip_suggest" data-tip="Öner">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg>
+                </button>
+
+                <!-- MESAJ YAZMA ALANI -->
+                <div class="sc-input-pill">
+                  <textarea id="chat-input" rows="1" data-i18n-ph="input_ph" placeholder="Mesaj yaz..." oninput="autoGrowChatInput(this)" onkeydown="handleInputKey(event)" onpaste="handleChatPaste(event)"></textarea>
+                </div>
+
+                <!-- GÖNDER / DURDUR -->
+                <button id="btn-send" type="button" class="sc-send-btn" onclick="sendMessage()" title="Gönder">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
+                <button id="btn-stop" type="button" class="sc-send-btn stop-btn hidden" onclick="stopStream()" title="Durdur">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Gizli persona select (mevcut referans uyumluluğu için) -->
+        <select id="chat-persona-select" class="hidden"></select>
+      </main>
+    </div>
+  </div>
+
+  <!-- MODALLAR -->
+
+  <!-- LOREBOOK KAYIT DÜZENLE / EKLE MODALI (YAPISAL KARAKTER PROFİLİ + GENEL KAYIT) -->
+  <div id="entry-modal" class="modal modal-blur hidden" onclick="if(event.target===this) closeModal('entry-modal')">
+    <div class="modal-box sc-entry-modal sc-entry-modal-wide">
+      <div class="modal-header" style="border-bottom:none;padding-bottom:6px;">
+        <h2 id="em-title">Karakter Profili Ekle</h2>
+        <button type="button" class="sc-circle-x" onclick="closeModal('entry-modal')">✕</button>
+      </div>
+      <div class="modal-body" style="padding-top:8px;">
+        <input type="hidden" id="em-idx" />
+        <input type="hidden" id="em-type" value="character" />
+
+        <!-- Kayıt Türü Seçici -->
+        <div class="em-type-tabs">
+          <button type="button" id="em-tab-char" class="em-type-btn active" onclick="switchEntryModalType('character')">👤 Karakter Profili</button>
+          <button type="button" id="em-tab-gen" class="em-type-btn" onclick="switchEntryModalType('general')">🌍 Genel Kayıt (Mekân / Olay)</button>
+        </div>
+
+        <!-- 1. YAPISAL KARAKTER PROFİLİ ALANLARI -->
+        <div id="em-char-fields">
+          <div class="sc-row-2">
+            <div class="sc-field">
+              <label class="sc-label">Ad <span class="req">*</span></label>
+              <input type="text" id="em-first-name" maxlength="40" placeholder="Örn: Daria" />
+            </div>
+            <div class="sc-field">
+              <label class="sc-label">Soyad</label>
+              <input type="text" id="em-last-name" maxlength="40" placeholder="Örn: Volkova" />
+            </div>
+          </div>
+
+          <div class="sc-row-3">
+            <div class="sc-field">
+              <label class="sc-label">Uyruk</label>
+              <input type="text" id="em-nationality" maxlength="50" placeholder="Örn: Rus / Türk" />
+            </div>
+            <div class="sc-field">
+              <label class="sc-label">Yaş</label>
+              <input type="text" id="em-age" maxlength="30" placeholder="Örn: 24" />
+            </div>
+            <div class="sc-field">
+              <label class="sc-label">Cinsiyet</label>
+              <input type="text" id="em-gender" maxlength="30" placeholder="Örn: Kadın / Erkek" />
+            </div>
+          </div>
+
+          <div class="sc-field">
+            <label class="sc-label">Fiziksel Özellikleri</label>
+            <textarea id="em-physical" rows="3" maxlength="900" placeholder="Boyu, saç ve göz rengi, yüz hatları, vücut yapısı, giyim tarzı..."></textarea>
+          </div>
+
+          <div class="sc-field">
+            <label class="sc-label">Kişisel Özellikleri</label>
+            <textarea id="em-personality" rows="3" maxlength="900" placeholder="Karakteri, mizacı, konuşma tarzı, tepkileri, güçlü ve zayıf yönleri..."></textarea>
+          </div>
+
+          <div class="sc-field">
+            <label class="sc-label">Yaşantısı</label>
+            <textarea id="em-lifestyle" rows="3" maxlength="900" placeholder="Mesleği, günlük rutini, yaşadığı yer, hobileri, geçmiş hikâyesi..."></textarea>
+          </div>
+
+          <div class="sc-field">
+            <label class="sc-label">Ailesi</label>
+            <textarea id="em-family" rows="2" maxlength="700" placeholder="Anne, baba, kardeşler, aile ilişkileri ve yakın çevresi..."></textarea>
+          </div>
+
+          <div class="sc-field">
+            <label class="sc-label">Ek Notlar / İlişkiler <span class="muted small-text">(İsteğe bağlı)</span></label>
+            <textarea id="em-extra-notes" rows="2" maxlength="900" placeholder="Sırlar, {{user}} ile ilişkisi, hikâyeye özel ek detaylar..."></textarea>
+          </div>
+        </div>
+
+        <!-- 2. GENEL KAYIT ALANLARI (MEKÂN / OLAY / KAVRAM) -->
+        <div id="em-general-fields" class="hidden">
+          <div class="sc-field">
+            <label class="sc-label">Ad <span class="req">*</span></label>
+            <input type="text" id="em-name" maxlength="60" placeholder="Örn: Kemerburgaz Tesisleri" oninput="updateCounter('em-name','em-name-cnt',60)" />
+            <div class="sc-meta-row">
+              <span>Mekân, olay, organizasyon veya kavram.</span>
+              <span id="em-name-cnt">0/60</span>
+            </div>
+          </div>
+
+          <div class="sc-field">
+            <label class="sc-label">İçerik <span class="req">*</span></label>
+            <textarea id="em-content" rows="7" maxlength="2000" placeholder="Detaylı bilgi..."></textarea>
+          </div>
+        </div>
+
+        <!-- ORTAK ALANLAR: ANAHTAR KELİMELER + HER ZAMAN AKTİF -->
+        <div class="sc-field">
+          <label class="sc-label">Anahtar Kelimeler <span id="em-kw-opt-hint" class="muted small-text">(Ad ve Soyad otomatik tetiklenir)</span></label>
+          <div class="sc-tag-box" onclick="document.getElementById('em-kw-input').focus()">
+            <div id="em-kw-chips" class="sc-chips-inline"></div>
+            <input type="text" id="em-kw-input" class="sc-tag-inp" placeholder="Ek lakap, meslek veya tetikleyici kelime yazıp Enter'a bas..." onkeydown="handleEntryKwKey(event)" />
+            <button type="button" class="sc-clear-x" onclick="event.stopPropagation();clearEntryKeywords()">✕</button>
+          </div>
+          <div class="sc-meta-row">
+            <span>Sohbette bu kelimeler (veya karakterin adı/soyadı) geçince profil YZ'ye otomatik gider</span>
+            <span id="em-kw-cnt">0/12</span>
+          </div>
+        </div>
+
+        <label class="checkbox-row" style="margin:0;">
+          <input type="checkbox" id="em-always" /> Her zaman aktif (anahtar kelime beklemeden her turda YZ'ye dahil et)
+        </label>
+      </div>
+      <div class="modal-footer" style="border-top:none;justify-content:space-between;">
+        <button type="button" class="link-btn" style="font-weight:600;color:var(--text);" onclick="closeModal('entry-modal')">İptal</button>
+        <div style="display:flex;gap:8px;">
+          <button type="button" class="sc-outline-btn" id="em-del-btn" onclick="deleteEntryFromModal()">Sil</button>
+          <button type="button" class="btn primary" id="em-save-btn" onclick="saveEntryFromModal()">Kaydet</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOREBOOK BAĞLA MODALI -->
+  <div id="attach-lorebook-modal" class="modal modal-blur hidden" onclick="if(event.target===this) closeModal('attach-lorebook-modal')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>Lorebook Bağla</h2>
+        <button class="sc-circle-x" onclick="closeModal('attach-lorebook-modal')">✕</button>
+      </div>
+      <div class="modal-body" id="attach-lb-list"></div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('attach-lorebook-modal')">İptal</button>
+        <button class="btn primary" onclick="applyAttachLorebooks()">Uygula</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULEBOOK BAĞLA MODALI -->
+  <div id="attach-rulebook-modal" class="modal modal-blur hidden" onclick="if(event.target===this) closeModal('attach-rulebook-modal')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>Rulebook Bağla</h2>
+        <button class="sc-circle-x" onclick="closeModal('attach-rulebook-modal')">✕</button>
+      </div>
+      <div class="modal-body" id="attach-rb-list"></div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('attach-rulebook-modal')">İptal</button>
+        <button class="btn primary" onclick="applyAttachRulebook()">Uygula</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRUP ÜYE SEÇİCİ MODALI -->
+  <div id="member-picker-modal" class="modal modal-blur hidden" onclick="if(event.target===this) closeModal('member-picker-modal')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>Grup Üyelerini Seç (En fazla 10)</h2>
+        <button class="sc-circle-x" onclick="closeModal('member-picker-modal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="mc-search-wrap" style="margin-bottom:10px;">
+          <span class="mc-search-ico">🔍</span>
+          <input type="text" id="mp-search" placeholder="Chatbot ara..." oninput="renderMemberPickerList()" />
+        </div>
+        <div id="mp-list" class="persona-list"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('member-picker-modal')">İptal</button>
+        <button class="btn primary" onclick="applyMemberPicker()">Üyeleri Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHATBOT BİLGİ ÖNİZLEME MODALI (i) -->
+  <div id="char-info-modal" class="modal modal-blur hidden" onclick="if(event.target===this) closeModal('char-info-modal')">
+    <div class="modal-box modal-wide">
+      <div class="modal-header">
+        <h2 id="ci-title">Chatbot Detayı</h2>
+        <button class="sc-circle-x" onclick="closeModal('char-info-modal')">✕</button>
+      </div>
+      <div class="modal-body" id="ci-body"></div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('char-info-modal')">Kapat</button>
+        <button class="btn" id="ci-edit-btn">✎ Düzenle</button>
+        <button class="btn primary" id="ci-chat-btn">Sohbete Başla</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HAFIZA & ÖZET MODALI -->
+  <div id="memory-modal" class="modal modal-blur hidden" onclick="if(event.target===this) closeModal('memory-modal')">
+    <div class="modal-box modal-wide">
+      <div class="modal-header">
+        <h2>🧠 Sohbet Hafızası</h2>
+        <button class="sc-circle-x" onclick="closeModal('memory-modal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="muted small-text" style="margin-bottom:12px;">
+          Sistem uzun sohbetlerde eski mesajları arka planda otomatik özetler. Asla unutulmasını istemediğin bilgileri aşağıdaki <b>Kalıcı Notlar</b> alanına yazabilirsin.
+        </p>
+        <label>Kalıcı Hafıza Notları
+          <textarea id="mem-pinned" rows="4" placeholder="Örn: Daria yan dairedeki komşumuz. Cumartesi derbi maçı var."></textarea>
+        </label>
+        <div class="sub-header" style="margin-top:8px;">
+          <b class="small-text muted">Otomatik Hikaye Özeti</b>
+          <button type="button" class="btn small" id="btn-resum" onclick="runManualSummarize()">↻ Şimdi Güncelle / Özetle</button>
+        </div>
+        <textarea id="mem-summary" rows="6" style="width:100%;" placeholder="Sohbet ilerledikçe otomatik dolar..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('memory-modal')">Kapat</button>
+        <button class="btn primary" onclick="saveMemoryModal()">Hafızayı Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOKASYON / SEÇİM LİSTESİ PILL PICKER MODALI -->
+  <div id="select-picker-modal" class="modal modal-blur hidden" onclick="if(event.target===this) closeModal('select-picker-modal')">
+    <div class="modal-box select-picker-box">
+      <div class="modal-header">
+        <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+          <span id="sp-meter-icon" class="meter-ico-badge c-sky"></span>
+          <div>
+            <div class="small-text muted" id="sp-meter-title">Lokasyon</div>
+            <div style="font-weight:700;font-size:15px;" id="sp-current-label">-</div>
+          </div>
+        </div>
+        <button class="sc-circle-x" onclick="closeModal('select-picker-modal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="sp-options-grid" class="loc-pills-grid"></div>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <input type="text" id="sp-new-opt" placeholder="Listeye yeni seçenek ekle..." style="flex:1;" onkeydown="if(event.key==='Enter'){event.preventDefault();addOptionFromPicker();}" />
+          <button type="button" class="btn small" onclick="addOptionFromPicker()">+ Ekle</button>
+        </div>
+      </div>
+      <div class="modal-footer" style="justify-content:space-between;">
+        <span class="small-text muted">Bir sonraki mesajından itibaren geçerli olur.</span>
+        <div style="display:flex;gap:8px;">
+          <button class="btn" onclick="closeModal('select-picker-modal')">İptal</button>
+          <button class="btn primary" onclick="applySelectPicker()">Uygula</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TÜM GÖSTERGELERİ ELLE DÜZENLEME MODALI -->
+  <div id="hud-modal" class="modal modal-blur hidden">
+    <div class="modal-box modal-wide">
+      <div class="modal-header">
+        <h2>🎛 Göstergeleri Elle Düzenle</h2>
+        <button class="sc-circle-x" onclick="closeModal('hud-modal')">✕</button>
+      </div>
+      <div class="modal-body" id="hud-editor-body"></div>
+      <div class="modal-footer">
+        <button class="btn danger" onclick="resetHudState()" style="margin-right:auto;">↺ Başlangıca Sıfırla</button>
+        <button class="btn" onclick="closeModal('hud-modal')">İptal</button>
+        <button class="btn primary" onclick="saveHudModal()">Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+    <!-- NEDEN? (AKTİF RULEBOOK & TALİMAT ÖNİZLEME MODALI) -->
+  <div id="why-modal" class="modal modal-blur hidden" onclick="if(event.target===this) closeModal('why-modal')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>Aktif Lorebook & Rulebook Etkileri</h2>
+        <button class="sc-circle-x" onclick="closeModal('why-modal')">✕</button>
+      </div>
+      <div class="modal-body" id="why-modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('why-modal')">Kapat</button>
+        <button class="btn primary" onclick="closeModal('why-modal');openHudModal()">Göstergeleri Düzenle</button>
+      </div>
+    </div>
+  </div>
+
+    <!-- KAYITLI SOHBETLER MODALI -->
+  <div id="saved-chats-modal" class="modal modal-blur hidden" onclick="if(event.target===this) closeModal('saved-chats-modal')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>Kayıtlı Sohbetler</h2>
+        <button class="sc-circle-x" onclick="closeModal('saved-chats-modal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="chat-history-list" class="chat-history-list"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('saved-chats-modal')">Kapat</button>
+        <button class="btn primary" onclick="closeModal('saved-chats-modal');startNewChat()">+ Sohbet Başlat</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERSONA DEĞİŞTİR MODALI -->
+  <div id="change-persona-modal" class="modal modal-blur hidden" onclick="if(event.target===this) closeModal('change-persona-modal')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>Persona Değiştir</h2>
+        <button class="sc-circle-x" onclick="closeModal('change-persona-modal')">✕</button>
+      </div>
+      <div class="modal-body" id="change-persona-list"></div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('change-persona-modal')">Kapat</button>
+        <button class="btn primary" onclick="closeModal('change-persona-modal');showView('personas')">Personaları Yönet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BAŞLIĞI DEĞİŞTİR MODALI -->
+  <div id="rename-chat-modal" class="modal modal-blur hidden" onclick="if(event.target===this) closeModal('rename-chat-modal')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>Sohbet Başlığını Değiştir</h2>
+        <button class="sc-circle-x" onclick="closeModal('rename-chat-modal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <label>Yeni Başlık
+          <input type="text" id="rename-chat-input" maxlength="100" placeholder="Sohbet başlığı..." onkeydown="if(event.key==='Enter'){event.preventDefault();saveRenameChat();}" />
+        </label>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('rename-chat-modal')">İptal</button>
+        <button class="btn primary" onclick="saveRenameChat()">Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SES AYARLARI MODALI (10 DİL x KADIN & ERKEK · HD NEURAL / GOOGLE CLOUD) -->
+  <div id="voice-modal" class="modal modal-blur hidden" onclick="if(event.target===this) closeModal('voice-modal')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 id="voice-modal-title" data-i18n="voice_title">Ses Ayarları</h2>
+        <button class="sc-circle-x" onclick="closeModal('voice-modal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="voice-engine-diag" class="voice-diag-box small-text">Motor durumu kontrol ediliyor...</div>
+        <label><span data-i18n="voice_select">Ses Seçimi (10 Dil · Kadın / Erkek)</span>
+          <select id="voice-select" onchange="onVoiceSelectChange()"></select>
+        </label>
+        <label><span data-i18n="voice_engine">Ses Motoru</span>
+          <select id="voice-engine" onchange="toggleGoogleTtsKeyBox()">
+            <option value="auto">Otomatik En İyi (HD Neural Kadın & Erkek — API anahtarı varsa Google Cloud HD)</option>
+            <option value="neural">HD Neural — Gerçek Kadın & Erkek Sesleri (Ücretsiz, Önerilen)</option>
+            <option value="google_cloud">Google Cloud Chirp 3 HD / WaveNet (API Anahtarı ile)</option>
+            <option value="google_free">Google Translate TTS (Yedek — Dil başına tek ses, Kadın/Erkek ayrımı yok)</option>
+          </select>
+        </label>
+        <div id="voice-gcloud-key-wrap">
+          <label>Google Cloud TTS API Anahtarı (İsteğe bağlı — Google Chirp 3 HD / WaveNet için)
+            <input type="text" id="voice-gcloud-key" placeholder="AIza... (boş bırakırsan ücretsiz HD Neural Kadın & Erkek kullanılır)" />
+          </label>
+        </div>
+        <div class="row-2">
+          <label>Konuşma Hızı (<span id="voice-rate-val">1.0</span>x)
+            <input type="range" id="voice-rate" min="0.6" max="1.6" step="0.05" value="1.0" oninput="document.getElementById('voice-rate-val').textContent=this.value" />
+          </label>
+          <label>Ses Tonu / Pitch (<span id="voice-pitch-val">1.0</span>)
+            <input type="range" id="voice-pitch" min="0.5" max="1.5" step="0.05" value="1.0" oninput="document.getElementById('voice-pitch-val').textContent=this.value" />
+          </label>
+        </div>
+        <label class="checkbox-row" style="margin-top:8px;">
+          <input type="checkbox" id="voice-auto" /> <span data-i18n="voice_auto">Bot yanıtı bittiğinde otomatik sesli oku</span>
+        </label>
+        <div style="margin-top:12px;display:flex;gap:8px;align-items:center;">
+          <button type="button" class="btn small" id="btn-voice-test" data-i18n="voice_test" onclick="testVoicePlayback()">🔊 Sesi Test Et</button>
+          <button type="button" class="btn small" data-i18n="voice_stop" onclick="stopVoicePlayback()">⏹ Durdur</button>
+          <span id="voice-test-status" class="muted small-text"></span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-i18n="btn_cancel" onclick="closeModal('voice-modal')">İptal</button>
+        <button class="btn primary" data-i18n="btn_save" onclick="saveVoiceSettings()">Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOHBET GÖRÜNÜMÜ MODALI (CHAT APPEARANCE) -->
+  <div id="appearance-modal" class="modal modal-blur hidden" onclick="if(event.target===this) closeModal('appearance-modal')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>Sohbet Görünümü</h2>
+        <button class="sc-circle-x" onclick="closeModal('appearance-modal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="row-2">
+          <label>Tema
+            <select id="ca-theme">
+              <option value="dark">Koyu Tema (Siyah + Koyu Gri)</option>
+              <option value="light">Açık Tema</option>
+            </select>
+          </label>
+          <label>Yazı Boyutu (<span id="ca-font-val">16</span> px)
+            <input type="range" id="ca-font-size" min="13" max="22" step="1" value="16" oninput="document.getElementById('ca-font-val').textContent=this.value" />
+          </label>
+        </div>
+        <div class="row-2">
+          <label>Kullanıcı Balon Rengi
+            <input type="color" id="ca-user-col" value="#0d2b4e" style="height:40px;width:100%;padding:3px;cursor:pointer;" />
+          </label>
+          <label>Bot Balon Rengi
+            <input type="color" id="ca-bot-col" value="#15161a" style="height:40px;width:100%;padding:3px;cursor:pointer;" />
+          </label>
+        </div>
+        <label>Eylem / İtalik Metin Rengi (*...*)
+          <input type="color" id="ca-italic-col" value="#4ade80" style="height:40px;width:100%;padding:3px;cursor:pointer;" />
+        </label>
+        <label>Sohbet Arka Plan Görseli
+          <div style="display:flex;gap:8px;">
+            <input type="text" id="ca-bg-url" placeholder="URL veya görsel yükle (boş = tam siyah)" style="flex:1;" />
+            <label class="btn small" style="margin:0;">Yükle<input type="file" accept="image/*" onchange="uploadAppearanceBg(this)" hidden /></label>
+            <button type="button" class="btn small" onclick="document.getElementById('ca-bg-url').value=''">Temizle</button>
+          </div>
+        </label>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="resetChatAppearanceDefaults()" style="margin-right:auto;">Varsayılana Dön</button>
+        <button class="btn" onclick="closeModal('appearance-modal')">İptal</button>
+        <button class="btn primary" onclick="saveChatAppearanceModal()">Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÜRETİM AYARLARI MODALI (GENERATION SETTINGS) -->
+  <div id="gen-settings-modal" class="modal modal-blur hidden" onclick="if(event.target===this) closeModal('gen-settings-modal')">
+    <div class="modal-box modal-wide">
+      <div class="modal-header">
+        <h2>Üretim Ayarları</h2>
+        <button class="sc-circle-x" onclick="closeModal('gen-settings-modal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <label><span data-i18n="speed_mode">Yanıt Hız Modu</span>
+          <select id="gs-speed-mode" onchange="applySpeedMode(this.value, 'modal')">
+            <option value="ultra">⚡ Ultra Hızlı (~5 sn hedef — 1-2 paragraf, 180 token)</option>
+                    <option value="turbo" data-i18n="speed_turbo">🚀 Turbo (Hızlı — 2-3 paragraf, 280 token)</option>
+            <option value="balanced" data-i18n="speed_balanced">⚖ Dengeli (12 mesaj, 460 token)</option>
+            <option value="long" data-i18n="speed_long">📖 Uzun & Detaylı (16 mesaj, 750 token)</option>
+          </select>
+        </label>
+        <div class="row-2">
+          <label>Anlatım Tarzı
+            <select id="gs-tone">
+              <option value="emotional">🎭 Duygulu & Karaktere Sadık (Önerilen)</option>
+              <option value="dramatic">🎬 Sinematik & Dramatik</option>
+              <option value="balanced">⚖ Dengeli & Doğal</option>
+              <option value="soft_emotional">💗 Yoğun Duygusal & Romantik</option>
+            </select>
+          </label>
+          <label>Hazır Ayar (Preset)
+            <select id="gs-preset" onchange="applyGenModalPreset()">
+              <option value="gemma4_rp">Gemma 4 (26B-A4B / Heretic) Türkçe RP</option>
+              <option value="qwen35_rp">Qwen 3.5 (9B) Türkçe RP</option>
+              <option value="turkish_rp">Dengeli Türkçe RP (0.76)</option>
+              <option value="precise">Çok Net / Sıfır Bozulma (0.55)</option>
+            </select>
+          </label>
+        </div>
+        <div class="row-2">
+          <label>Yaratıcılık (Temperature) <input type="number" id="gs-temp" step="0.02" min="0" max="2" /></label>
+          <label>Tekrar Cezası (Rep Penalty) <input type="number" id="gs-rep" step="0.02" min="1" max="1.5" /></label>
+        </div>
+        <div class="row-2">
+          <label>Top-P <input type="number" id="gs-top-p" step="0.01" min="0.1" max="1" /></label>
+          <label>Top-K (Gemma 4: 64 / Qwen: 20) <input type="number" id="gs-top-k" step="1" min="0" max="200" /></label>
+        </div>
+        <div class="row-2">
+          <label>Min-P <input type="number" id="gs-min-p" step="0.01" min="0" max="0.5" /></label>
+          <label>En Uzun Cevap (Max Tokens) <input type="number" id="gs-max-tokens" step="128" min="256" max="8192" /></label>
+        </div>
+        <div class="row-2">
+          <label>Hatırlanan Mesaj Sayısı <input type="number" id="gs-ctx-msgs" min="6" max="50" /></label>
+          <label>Model Adı (Boş = Otomatik) <input type="text" id="gs-model" list="model-list" placeholder="Otomatik" /></label>
+        </div>
+        <label class="checkbox-row"><input type="checkbox" id="gs-no-think" /> Hızlı Mod (/no_think — düşünme bloğunu kapatır)</label>
+        <label class="checkbox-row"><input type="checkbox" id="gs-strict" /> Yüksek Tutarlılık Çapası</label>
+        <label class="checkbox-row"><input type="checkbox" id="gs-live-stream" /> Canlı Akış / Daktilo Modu (Kapalı = tek seferde temiz görünüm)</label>
+        <label class="checkbox-row"><input type="checkbox" id="gs-ai-judge" /> Arka Plan AI Gösterge Hakemi (Kapalı önerilir — hızlı KV-Cache için)</label>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('gen-settings-modal')">İptal</button>
+        <button class="btn primary" onclick="saveGenSettingsModal()">Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRUP KONUŞAN SEÇİMİ MODALI -->
+  <div id="group-speaker-modal" class="modal modal-blur hidden" onclick="if(event.target===this) closeModal('group-speaker-modal')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>Sıradaki Konuşanı Seç</h2>
+        <button class="sc-circle-x" onclick="closeModal('group-speaker-modal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="group-speakers-list" class="speaker-pills"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('group-speaker-modal')">Kapat</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- KART ÜÇ NOKTA (⋮) POPOVER MENÜSÜ -->
+  <div id="card-popover" class="card-popover hidden"></div>
+
+  <script src="/static/i18n.js?v=33"></script>
+  <script src="/static/rulebook_editor.js?v=33"></script>
+  <script src="/static/app.js?v=33"></script>
+</body>
+</html>

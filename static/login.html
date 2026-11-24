@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="MEIRCHAT" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="apple-touch-icon" href="/static/meirchat.png" />
+  <link rel="icon" type="image/png" href="/static/meirchat.png" />
+  <title>MEIRCHAT — Giriş</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100dvh; background: #000000; color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px env(safe-area-inset-right) 20px env(safe-area-inset-left);
+    }
+    .card {
+      width: 100%; max-width: 390px; background: #14151a;
+      border: 1px solid #262934; border-radius: 18px; padding: 32px 26px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.75); text-align: center;
+    }
+    .logo {
+      width: 68px; height: 68px; border-radius: 16px; margin: 0 auto 14px;
+      display: block; box-shadow: 0 8px 24px rgba(29, 123, 245, 0.35);
+    }
+    h1 { font-size: 24px; font-weight: 800; letter-spacing: 0.08em; margin-bottom: 4px; }
+    .sub { font-size: 13px; color: #9ca3af; margin-bottom: 24px; }
+    form { display: flex; flex-direction: column; gap: 12px; text-align: left; }
+    label { font-size: 13px; font-weight: 600; color: #d4d4d8; }
+    input {
+      width: 100%; padding: 13px 14px; border-radius: 11px;
+      background: #0a0b0e; border: 1px solid #2d3140; color: #ffffff;
+      font-size: 16px; outline: none; transition: border-color 0.15s;
+    }
+    input:focus { border-color: #1d7bf5; }
+    button {
+      margin-top: 6px; padding: 13px 16px; border-radius: 11px; border: none;
+      background: #1d7bf5; color: #ffffff; font-size: 15.5px; font-weight: 700;
+      cursor: pointer; transition: background 0.15s;
+    }
+    button:hover { background: #1463cc; }
+    button:disabled { opacity: 0.6; cursor: wait; }
+    .err {
+      min-height: 20px; font-size: 13px; color: #f87171; text-align: center;
+      margin-top: 6px; font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img class="logo" src="/static/meirchat.png" alt="MEIRCHAT" />
+    <h1>MEIRCHAT</h1>
+    <div class="sub">Kişisel Bulut & Mobil Erişim</div>
+    <form id="login-form" autocomplete="on">
+      <input type="text" name="username" value="meirchat" autocomplete="username" style="display:none;" aria-hidden="true" />
+      <label for="pw">Erişim Şifresi</label>
+      <input id="pw" name="password" type="password" placeholder="Şifreni gir..." autocomplete="current-password" required autofocus />
+      <button type="submit" id="btn-go">Giriş Yap</button>
+      <div class="err" id="err"></div>
+    </form>
+  </div>
+  <script>
+    const form = document.getElementById("login-form");
+    const pwEl = document.getElementById("pw");
+    const btn = document.getElementById("btn-go");
+    const errEl = document.getElementById("err");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errEl.textContent = "";
+      btn.disabled = true;
+      btn.textContent = "Kontrol ediliyor...";
+      try {
+        const res = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password: pwEl.value })
+        });
+        if (res.ok) {
+          window.location.replace("/");
+          return;
+        }
+        const d = await res.json().catch(() => ({}));
+        errEl.textContent = d.detail || "Şifre yanlış.";
+        pwEl.select();
+      } catch {
+        errEl.textContent = "Sunucuya bağlanılamadı.";
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Giriş Yap";
+      }
+    });
+  </script>
+</body>
+</html>
